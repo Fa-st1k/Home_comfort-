@@ -1,0 +1,345 @@
+import json
+from view import menu_2
+
+
+def editing_employees():
+    with open('the_database.json', 'r') as f:
+        data = json.load(f)
+
+    employee_id = input("Enter the ID of the employee you want to edit: ")
+    if any(d["ID"] == employee_id for d in data):
+        employee = next(d for d in data if d["ID"] == employee_id)
+        print("Employee details:")
+        print(f"ID: {employee_id}")
+        print(f"FIO: {employee['FIO']}")
+        print(f"Age: {employee['age']}")
+        print(f"Weight: {employee['weight']}")
+        while True:
+            choice = input("What would you like to edit? (FIO / age / weight / exit): ")
+
+            if choice == "FIO":
+                new_fio = input("Enter the new FIO: ")
+                employee['FIO'] = new_fio
+                print("FIO updated successfully.")
+            elif choice == "age":
+                new_age = int(input("Enter the new age: "))
+                employee['age'] = new_age
+                print("Age updated successfully.")
+            elif choice == "weight":
+                new_weight = input("Enter the new weight: ")
+                employee['weight'] = new_weight
+                print("Weight updated successfully.")
+            elif choice == "exit":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+        with open('the_database.json', 'w') as f:
+            json.dump(data, f)
+            print("Data saved successfully.")
+
+        while True:
+            continue_editing = input("Do you want to edit something else for this employee? (yes / no): ")
+
+            if continue_editing == "yes":
+                choice = input("What would you like to edit? (FIO / age / weight / exit): ")
+
+                if choice == "FIO":
+                    new_fio = input("Enter the new FIO: ")
+                    employee['FIO'] = new_fio
+                    print("FIO updated successfully.")
+                elif choice == "age":
+                    new_age = int(input("Enter the new age: "))
+                    employee['age'] = new_age
+                    print("Age updated successfully.")
+                elif choice == "weight":
+                    new_weight = input("Enter the new weight: ")
+                    employee['weight'] = new_weight
+                    print("Weight updated successfully.")
+                elif choice == "exit":
+                    break
+                else:
+                    print("Invalid choice. Please try again.")
+
+                with open('the_database.json', 'w') as f:
+                    json.dump(data, f)
+                    print("Data saved successfully.")
+            elif continue_editing == "no":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+        while True:
+            continue_editing_employee = input("Do you want to edit another employee? (yes / no): ")
+
+            if continue_editing_employee == "yes":
+                editing_employees()
+                break
+            elif continue_editing_employee == "no":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+    else:
+        print("Invalid employee ID.")
+
+
+
+def get_all_employees():
+    with open('the_database.json', 'r') as f:
+        employees = json.load(f)
+
+    for employee in employees:
+        try:
+            print("FIO:", employee['FIO'])
+            print("Age:", employee['age'])
+            print("Weight:", employee['weight'])
+            print("ID:", employee['ID'])
+            print()
+        except KeyError:
+            print("Missing key in employee data:", employee)
+
+def removing_employees(employee_id):
+    # Read the data from the file
+    with open('the_database.json', 'r') as file:
+        data = json.load(file)
+
+    # Find and remove the employee with the given ID
+    removed_employee = None
+    for employee in data:
+        if employee['ID'] == str(employee_id):
+            removed_employee = employee
+            data.remove(employee)
+            break
+
+    # Write the updated data back to the file
+    with open('the_database.json', 'w') as file:
+        json.dump(data, file)
+    return removed_employee
+
+
+
+def See_everyone_who_wants_to_get_a_job():
+    print()
+
+
+
+def fire_employees():
+     # Clear the contents of the file
+    with open('the_database.json', 'w') as file:
+         file.write('[]')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def user():
+    n = 1
+    Basket = []
+    list_menu = ["Cappuccino", "American", "Espresso", "Cheesecake", "Cream soup"]
+    while n >= 1 and n < 5:
+
+        def total_price_1():
+            global Total_price
+            Total_price = Basket.count('Cappuccino') * 150 + Basket.count('American') * 120 + Basket.count(
+                'Espresso') * 80 + Basket.count('Cheesecake') * 100 + Basket.count('Cream soup') * 250
+            print("You have bought goods for the amount of: ", Total_price)
+
+        def menu_1(menu):
+            menu_2()
+
+        print(menu_1(1))
+        Action_selection = int(input("Enter the number of the desired action:"))
+
+        def go_to_order_1(go_to_order):
+            menu_3 = ("\n─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──\n"
+                      "\n 1 - Cappuccino - 150 rubles"
+                      "\n 2 - American - 120 rubles"
+                      "\n 3 - Espresso - 80 rubles "
+                      "\n 4 - Cheesecake - 100 rubles "
+                      "\n 5 - Cream soup - 250 rubles"
+                      "\n─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──\n")
+            print(menu_3)
+            go_to_order_2 = int(input("Enter the number of the product you want to order:"))
+
+            if go_to_order_2 == 1:
+                Basket.append("Cappuccino")
+            elif go_to_order_2 == 2:
+                Basket.append('American')
+            elif go_to_order_2 == 3:
+                Basket.append('Espresso')
+            elif go_to_order_2 == 4:
+                Basket.append('Cheesecake')
+            elif go_to_order_2 == 5:
+                Basket.append('Cream soup')
+
+        def payment_1(payment):
+            total_price_1()
+            print(('\n Enter the payment method:\n 1 - by map \n 2 - in cash '))
+            sposob_oplaty = int(input())
+            if sposob_oplaty == 2:
+                Bill_for_payment = int(input("Enter the amount of payment in cash: "))
+                if Bill_for_payment > Total_price:
+                    print("Here's your change:", Bill_for_payment - Total_price)
+                    print("Thanks for the purchase!")
+                elif Bill_for_payment == Total_price:
+                    print("Thanks for the purchase!")
+                else:
+                    print("You did not give enough money to pay for the order!")
+            if sposob_oplaty == 1:
+                print("Thanks for the purchase!")
+
+        def cart_1(cart):
+            print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
+            print('1 - ', 'Cappuccino:', Basket.count('Cappuccino'), " - ", Basket.count('Cappuccino') * 150)
+            print('2 - ', 'American:', Basket.count('American'), " - ", Basket.count('American') * 120)
+            print('3 - ', 'Espresso:', Basket.count('Espresso'), " - ", Basket.count('Espresso') * 80)
+            print('4 - ', 'Cheesecake:', Basket.count('Cheesecake'), " - ", Basket.count('Cheesecake') * 100)
+            print('5 - ', 'Cream soup:', Basket.count('Cream soup'), " - ", Basket.count('Cream soup') * 250)
+
+            total_price_1()
+            print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
+
+        def change_basket():
+
+            change = int(input("Enter the sequence number of what you would like to change\n "))
+            print("Do you want to change the number", list_menu[change - 1],
+                  "?\n 0 - reduce , 1 - increase")
+            number = int(input())
+            if number == 0:
+                number_1 = int(input("Add the number you want to reduce by:"))
+                while number_1 > 0:
+                    Basket.remove(list_menu[change - 1])
+                    number_1 = number_1 - 1
+            elif number == 1:
+                number_1 = int(input("Add the number you want to increase by: "))
+                while number_1 > 0:
+                    Basket.append(list_menu[change - 1])
+                    number_1 = number_1 - 1
+
+        def editing_cart_1(editing_cart):
+            while True:
+                cart_1("cart")
+
+                go_mane_menu = input("Do you want to go back? if yes, write (1) \n")
+                if int(go_mane_menu) == 1:
+                    break
+                else:
+                    change_basket()
+
+
+        if Action_selection == 1:
+            go_to_order_1("go_to_order")
+        elif Action_selection == 2:
+            payment_1("payment")
+        elif Action_selection == 3:
+            cart_1("cart")
+        elif Action_selection == 4:
+            editing_cart_1("editing_cart")
+        elif Action_selection == 5:
+            print("Goodbye!")
+            break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def Sending_a_job_application():
+    list_applications = []
+
+    def entering_age():
+        global year
+        try:
+            year = int(input("Specify how old you are: \n"))
+        except ValueError:
+            print("You have entered an incorrect age, try again \n")
+            return entering_age()
+
+    def entering_weight():
+        global weight
+        try:
+            weight = int(input("Specify your weight: \n"))
+        except ValueError:
+            print("You entered an incorrect weight, try again \n")
+            return entering_age()
+
+    name = input("Specify your FIO: \n")
+    entering_age()
+    entering_weight()
+    work_experience = input(
+        "Do you have any work experience? If there is, specify how old it is. If not, then write 'no': \n")
+    qualities = input("Name your qualities, an example: \n hard work, perseverance, responsibility, sociability: \n")
+    estimation = 0
+
+    def criteria_age(year, estimation):
+        if 18 < year < 55:
+            estimation += 1
+        else:
+            estimation -= 1
+        return estimation
+
+    def criteria_weight(weight, estimation):
+        if 24 < weight < 121:
+            estimation += 1
+        else:
+            estimation -= 1
+        return estimation
+
+    def criteria_exp(work_experience, estimation, year):
+        if work_experience != 'no' and work_experience != '0':
+            estimation += 1
+        elif work_experience > year:
+            print("It seems to me that you are deceiving me somewhere. You could not work more than your life. \n")
+            estimation -= 1
+        return estimation
+
+    def criteria_qlts(qualities, estimation):
+        if ("hard work" in qualities and "perseverance" in qualities) or (
+                "responsibility" in qualities and "sociability" in qualities):
+            estimation += 1
+        return estimation
+
+    def employed(estimation):
+        if estimation >= 3:
+            print("\n You are excellent, your application has been submitted for consideration \n")
+            list_applications.append("Name: " + str(name))
+            list_applications.append("Approximate year of birth: " + str(2023 - year))
+            list_applications.append("weight: " + str(weight) + " kg")
+            list_applications.append("Work experience: " + str(work_experience) + " Year" if int(
+                work_experience) == 1 else "Work experience: " + str(work_experience) + " years")
+            list_applications.append("Characteristics: " + qualities)
+        else:
+            print("You don't fit in \n")
+
+    estimation = criteria_age(year, estimation)
+    estimation = criteria_weight(weight, estimation)
+    estimation = criteria_exp(work_experience, estimation, year)
+    estimation = criteria_qlts(qualities, estimation)
+
+    employed(estimation)
+
+    print(*list_applications, sep='\n')
