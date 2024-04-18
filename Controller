@@ -1,0 +1,67 @@
+from model import editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,See_everyone_who_wants_to_get_a_job
+from view import display_menu,  display_success, display_error
+import json
+
+def main():
+    employee_list = []
+
+    while True:
+        display_menu()
+        choice = input("\nSelect an action (1-4): ")
+
+        if choice == "1":
+            the_database = {}
+            the_database['FIO'] = input("Enter FIO: ")
+            the_database['age'] = int(input("Enter age: "))
+            the_database["weight"] = input("Enter weight: ")
+            the_database["ID"] = input("Enter the desired employee ID: ")
+
+            employee_list.append(the_database)
+
+            with open('the_database.json', 'w') as f:
+                json.dump(employee_list, f)
+
+            display_success("The employee was successfully accepted.")
+        elif choice == "2":
+            get_all_employees()
+        elif choice == "3":
+            editing_employees()
+        elif choice == "4":
+            index = int(input("Enter the ID of the employee you want to remove: "))
+            removed_employee = removing_employees(index)
+            if removed_employee:
+                display_success(f"FIO {removed_employee['FIO']}, Age {removed_employee['age']}, Weight {removed_employee['weight']} deleted.")
+            else:
+                display_error("Invalid employee ID.")
+        elif choice == "5":
+            See_everyone_who_wants_to_get_a_job()
+
+        elif choice == "6":
+            fire_employees()
+            print("Exiting the program.")
+            break
+        else:
+            display_error("Wrong choice. Please choose from this")
+
+Log_in_to_the_system = input("\n Welcome to the cafe 'Home comfort'!"
+                             "\n 1 - Admin Mode"
+                             "\n 2 - Buyer's mode"
+                             "\n 3 - Application submission mode"
+                             "\n Enter the number of the desired action:")
+if Log_in_to_the_system == "1":
+    global Password
+    Password = "2444666668888888"
+    num = input("Enter the password:")
+    if Password == num:
+        main()
+    else:
+        print("\n You entered the password incorrectly!"
+                "\n You're not an admin, goodbye!")
+elif Log_in_to_the_system == "2":
+    user()
+elif Log_in_to_the_system == "3":
+    Sending_a_job_application()
+
+
+if __name__ == "main":
+    main()
