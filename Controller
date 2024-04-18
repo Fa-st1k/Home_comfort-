@@ -11,9 +11,12 @@ def main():
 
         if choice == "1":
             the_database = {}
-            the_database['FIO'] = input("Enter FIO: ")
+            the_database['Name'] = input("Enter Name: ")
+            the_database['Surname'] = input("Enter Surname: ")
+            the_database['Middle_name'] = input("Enter Middle_name: ")
             the_database['age'] = int(input("Enter age: "))
-            the_database["weight"] = input("Enter weight: ")
+            the_database["desired position"] = input("Enter desired position: ")
+            the_database["experience"] = input("Enter experience: ")
             the_database["ID"] = input("Enter the desired employee ID: ")
 
             employee_list.append(the_database)
@@ -60,6 +63,7 @@ if Log_in_to_the_system == "1":
 elif Log_in_to_the_system == "2":
     user()
 elif Log_in_to_the_system == "3":
+    print("Перейдите в телеграмм, для этого введите в строке поиска @Projectbot12345bot")
     Sending_a_job_application()
 
 
