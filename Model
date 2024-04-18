@@ -1,4 +1,8 @@
 import json
+import telebot
+import json
+import random
+import string
 from view import menu_2
 
 
@@ -11,24 +15,39 @@ def editing_employees():
         employee = next(d for d in data if d["ID"] == employee_id)
         print("Employee details:")
         print(f"ID: {employee_id}")
-        print(f"FIO: {employee['FIO']}")
-        print(f"Age: {employee['age']}")
-        print(f"Weight: {employee['weight']}")
+        print(f"Name: {employee['Name']}")
+        print(f"Surname: {employee['Surname']}")
+        print(f"Middle_name: {employee['Middle_name']}")
+        print(f"age: {employee['age']}")
+        print(f"desired position: {employee['desired position']}")
+        print(f"experience: {employee['experience']}")
         while True:
-            choice = input("What would you like to edit? (FIO / age / weight / exit): ")
+            choice = input("What would you like to edit? (Name / Surname / Middle_name / age / desired position / experience): ")
 
-            if choice == "FIO":
-                new_fio = input("Enter the new FIO: ")
-                employee['FIO'] = new_fio
-                print("FIO updated successfully.")
+            if choice == "Name":
+                new_Name = input("Enter the new Name: ")
+                employee['Name'] = new_Name
+                print("Name updated successfully.")
+            elif choice == "Surname":
+                new_Surname = int(input("Enter the new age: "))
+                employee['Surname'] = new_Surname
+                print("Surname updated successfully.")
+            elif choice == "Middle_name":
+                new_Middle_name = input("Enter the new Middle_name: ")
+                employee['Middle_name'] = new_Middle_name
+                print("Middle_name updated successfully.")
             elif choice == "age":
-                new_age = int(input("Enter the new age: "))
+                new_age = input("Enter the new age: ")
                 employee['age'] = new_age
-                print("Age updated successfully.")
-            elif choice == "weight":
-                new_weight = input("Enter the new weight: ")
-                employee['weight'] = new_weight
-                print("Weight updated successfully.")
+                print("age updated successfully.")
+            elif choice == "desired position":
+                new_desired_position = input("Enter the new desired position: ")
+                employee['desired position'] = new_desired_position
+                print("Desired position updated successfully.")
+            elif choice == "experience":
+                new_experience = input("Enter the new experience: ")
+                employee['experience'] = new_experience
+                print("experience updated successfully.")
             elif choice == "exit":
                 break
             else:
@@ -42,20 +61,32 @@ def editing_employees():
             continue_editing = input("Do you want to edit something else for this employee? (yes / no): ")
 
             if continue_editing == "yes":
-                choice = input("What would you like to edit? (FIO / age / weight / exit): ")
+                choice = input("What would you like to edit? (Name / Surname / Middle_name / age / desired position / experience): ")
 
-                if choice == "FIO":
-                    new_fio = input("Enter the new FIO: ")
-                    employee['FIO'] = new_fio
-                    print("FIO updated successfully.")
+                if choice == "Name":
+                    new_Name = input("Enter the new Name: ")
+                    employee['Name'] = new_Name
+                    print("Name updated successfully.")
+                elif choice == "Surname":
+                    new_Surname = int(input("Enter the new age: "))
+                    employee['Surname'] = new_Surname
+                    print("Surname updated successfully.")
+                elif choice == "Middle_name":
+                    new_Middle_name = input("Enter the new Middle_name: ")
+                    employee['Middle_name'] = new_Middle_name
+                    print("Middle_name updated successfully.")
                 elif choice == "age":
-                    new_age = int(input("Enter the new age: "))
+                    new_age = input("Enter the new age: ")
                     employee['age'] = new_age
-                    print("Age updated successfully.")
-                elif choice == "weight":
-                    new_weight = input("Enter the new weight: ")
-                    employee['weight'] = new_weight
-                    print("Weight updated successfully.")
+                    print("age updated successfully.")
+                elif choice == "desired position":
+                    new_desired_position = input("Enter the new desired position: ")
+                    employee['desired position'] = new_desired_position
+                    print("Desired position updated successfully.")
+                elif choice == "experience":
+                    new_experience = input("Enter the new experience: ")
+                    employee['experience'] = new_experience
+                    print("experience updated successfully.")
                 elif choice == "exit":
                     break
                 else:
@@ -119,8 +150,33 @@ def removing_employees(employee_id):
 
 
 def See_everyone_who_wants_to_get_a_job():
-    print()
+    with open('user_data.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
 
+        print(json.dumps(data, indent=4, ensure_ascii=False))
+
+def Adding_employees_from_the_jison():
+        with open('user_data.json', 'r', encoding='utf-8') as user_file:
+            user_data = json.load(user_file)
+
+        with open('the_database.json', 'r', encoding='utf-8') as database_file:
+            database = json.load(database_file)
+
+        for user_entry in user_data:
+            for db_entry in database:
+                if user_entry['code'] == db_entry['ID']:
+                    user_info = user_entry['info'].split('\n')
+                    db_entry.update({
+                        'FIO': user_info[0].strip(),
+                        'age': int(user_info[3].strip()),
+                        # Добавьте другие поля из данных пользователя по аналогии
+                        # Пример:
+                        # 'position': user_info[4].strip(),
+                        # 'experience': user_info[5].strip(),
+                    })
+
+        with open('the_database.json', 'w', encoding='utf-8') as database_file:
+            json.dump(database, database_file, indent=4, ensure_ascii=False)
 
 
 def fire_employees():
@@ -268,78 +324,32 @@ def user():
 
 
 
+
 def Sending_a_job_application():
-    list_applications = []
+    TOKEN = '6795222480:AAFBy7UgYqD41qA08cl9mJDdKpx-9eW5IF4'
+    bot = telebot.TeleBot(TOKEN)
+    user_data = {}
 
-    def entering_age():
-        global year
-        try:
-            year = int(input("Specify how old you are: \n"))
-        except ValueError:
-            print("You have entered an incorrect age, try again \n")
-            return entering_age()
+    @bot.message_handler(commands=['start'])
+    def start(message):
+        bot.send_message(message.chat.id,
+                         "Привет! Отправь мне свои данные: Имя, Фамилию, Отчество, Возраст, Желаемое место работы и Стаж, каждое на новой строке.")
 
-    def entering_weight():
-        global weight
-        try:
-            weight = int(input("Specify your weight: \n"))
-        except ValueError:
-            print("You entered an incorrect weight, try again \n")
-            return entering_age()
-
-    name = input("Specify your FIO: \n")
-    entering_age()
-    entering_weight()
-    work_experience = input(
-        "Do you have any work experience? If there is, specify how old it is. If not, then write 'no': \n")
-    qualities = input("Name your qualities, an example: \n hard work, perseverance, responsibility, sociability: \n")
-    estimation = 0
-
-    def criteria_age(year, estimation):
-        if 18 < year < 55:
-            estimation += 1
+    @bot.message_handler(func=lambda message: True)
+    def get_user_data(message):
+        chat_id = message.chat.id
+        if chat_id not in user_data:
+            user_data[chat_id] = {}
+            user_data[chat_id]['info'] = message.text
+            user_data[chat_id]['code'] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            bot.send_message(chat_id, f"Ваш уникальный код: {user_data[chat_id]['code']}. Пожалуйста, введите код:")
         else:
-            estimation -= 1
-        return estimation
+            if message.text == user_data[chat_id]['code']:
+                data = user_data.pop(chat_id)
+                with open('user_data.json', 'a', encoding='utf-8') as file:
+                    json.dump(data, file, indent=4, ensure_ascii=False)
+                bot.send_message(chat_id, "Данные успешно сохранены!")
+            else:
+                bot.send_message(chat_id, "Неверный код. Попробуйте еще раз.")
 
-    def criteria_weight(weight, estimation):
-        if 24 < weight < 121:
-            estimation += 1
-        else:
-            estimation -= 1
-        return estimation
-
-    def criteria_exp(work_experience, estimation, year):
-        if work_experience != 'no' and work_experience != '0':
-            estimation += 1
-        elif work_experience > year:
-            print("It seems to me that you are deceiving me somewhere. You could not work more than your life. \n")
-            estimation -= 1
-        return estimation
-
-    def criteria_qlts(qualities, estimation):
-        if ("hard work" in qualities and "perseverance" in qualities) or (
-                "responsibility" in qualities and "sociability" in qualities):
-            estimation += 1
-        return estimation
-
-    def employed(estimation):
-        if estimation >= 3:
-            print("\n You are excellent, your application has been submitted for consideration \n")
-            list_applications.append("Name: " + str(name))
-            list_applications.append("Approximate year of birth: " + str(2023 - year))
-            list_applications.append("weight: " + str(weight) + " kg")
-            list_applications.append("Work experience: " + str(work_experience) + " Year" if int(
-                work_experience) == 1 else "Work experience: " + str(work_experience) + " years")
-            list_applications.append("Characteristics: " + qualities)
-        else:
-            print("You don't fit in \n")
-
-    estimation = criteria_age(year, estimation)
-    estimation = criteria_weight(weight, estimation)
-    estimation = criteria_exp(work_experience, estimation, year)
-    estimation = criteria_qlts(qualities, estimation)
-
-    employed(estimation)
-
-    print(*list_applications, sep='\n')
+    bot.polling()
