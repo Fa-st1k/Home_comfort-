@@ -155,34 +155,18 @@ def See_everyone_who_wants_to_get_a_job():
 
         print(json.dumps(data, indent=4, ensure_ascii=False))
 
-def Adding_employees_from_the_jison():
-        with open('user_data.json', 'r', encoding='utf-8') as user_file:
-            user_data = json.load(user_file)
+def Get_everyone_to_work():
+    Pass
 
-        with open('the_database.json', 'r', encoding='utf-8') as database_file:
-            database = json.load(database_file)
-
-        for user_entry in user_data:
-            for db_entry in database:
-                if user_entry['code'] == db_entry['ID']:
-                    user_info = user_entry['info'].split('\n')
-                    db_entry.update({
-                        'FIO': user_info[0].strip(),
-                        'age': int(user_info[3].strip()),
-                        # Добавьте другие поля из данных пользователя по аналогии
-                        # Пример:
-                        # 'position': user_info[4].strip(),
-                        # 'experience': user_info[5].strip(),
-                    })
-
-        with open('the_database.json', 'w', encoding='utf-8') as database_file:
-            json.dump(database, database_file, indent=4, ensure_ascii=False)
 
 
 def fire_employees():
      # Clear the contents of the file
     with open('the_database.json', 'w') as file:
          file.write('[]')
+    with open('user_data.json', 'w') as file:
+         file.write('[]')
+
 
 
 
@@ -214,7 +198,6 @@ def user():
 
         def menu_1(menu):
             menu_2()
-
         print(menu_1(1))
         Action_selection = int(input("Enter the number of the desired action:"))
 
