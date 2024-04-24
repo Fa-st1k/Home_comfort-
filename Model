@@ -10,108 +10,116 @@ def editing_employees():
     with open('the_database.json', 'r') as f:
         data = json.load(f)
 
-    employee_id = input("Enter the ID of the employee you want to edit: ")
+    employee_id = input("Введите идентификатор сотрудника, который вы хотите отредактировать:")
     if any(d["ID"] == employee_id for d in data):
         employee = next(d for d in data if d["ID"] == employee_id)
-        print("Employee details:")
+        print("Сведения о сотруднике:")
         print(f"ID: {employee_id}")
-        print(f"Name: {employee['Name']}")
-        print(f"Surname: {employee['Surname']}")
-        print(f"Middle_name: {employee['Middle_name']}")
-        print(f"age: {employee['age']}")
-        print(f"desired position: {employee['desired position']}")
-        print(f"experience: {employee['experience']}")
+        print(f"Имя: {employee['Имя']}")
+        print(f"Фамилия: {employee['Фамилия']}")
+        print(f"Отчество: {employee['Отчество']}")
+        print(f"Возраст: {employee['Возраст']}")
+        print(f"желаемое положение: {employee['желаемое положение']}")
+        print(f"опыт: {employee['опыт']}")
         while True:
-            choice = input("What would you like to edit? (Name / Surname / Middle_name / age / desired position / experience): ")
+            choice = input("Что бы вы хотели изменить? (Имя, отчество, возраст, желаемая должность, опыт работы, ID):")
 
-            if choice == "Name":
-                new_Name = input("Enter the new Name: ")
-                employee['Name'] = new_Name
-                print("Name updated successfully.")
-            elif choice == "Surname":
-                new_Surname = int(input("Enter the new age: "))
-                employee['Surname'] = new_Surname
-                print("Surname updated successfully.")
-            elif choice == "Middle_name":
-                new_Middle_name = input("Enter the new Middle_name: ")
-                employee['Middle_name'] = new_Middle_name
-                print("Middle_name updated successfully.")
-            elif choice == "age":
-                new_age = input("Enter the new age: ")
-                employee['age'] = new_age
-                print("age updated successfully.")
-            elif choice == "desired position":
-                new_desired_position = input("Enter the new desired position: ")
-                employee['desired position'] = new_desired_position
-                print("Desired position updated successfully.")
-            elif choice == "experience":
-                new_experience = input("Enter the new experience: ")
-                employee['experience'] = new_experience
-                print("experience updated successfully.")
-            elif choice == "exit":
+            if choice == "Имя":
+                new_Name = input("Введите в новый Имя: ")
+                employee['Имя'] = new_Name
+                print("Имя успешно обновлено.")
+            elif choice == "Фамилия":
+                new_Surname = int(input("Введите в новый Фамилия: "))
+                employee['Фамилия'] = new_Surname
+                print("Фамилия успешно обновлено.")
+            elif choice == "Отчество":
+                new_Middle_name = input("Введите в новый Отчество: ")
+                employee['Отчество'] = new_Middle_name
+                print("Отчество успешно обновлено.")
+            elif choice == "Возраст":
+                new_age = input("Введите в новый Возраст: ")
+                employee['Возраст'] = new_age
+                print("Возраст успешно обновлено.")
+            elif choice == "желаемое положение":
+                new_desired_position = input("Введите в новый желаемое положение: ")
+                employee['желаемое положение'] = new_desired_position
+                print("Имя успешно обновлено.")
+            elif choice == "опыт":
+                new_experience = input("Введите в новый опыт: ")
+                employee['опыт'] = new_experience
+                print("опыт успешно обновлено.")
+            elif choice == "ID":
+                new_experience = input("Введите в новый ID: ")
+                employee['ID'] = new_experience
+                print("ID успешно обновлено.")
+            elif choice == "выход":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("Неверный выбор. Пожалуйста, попробуйте снова.")
 
         with open('the_database.json', 'w') as f:
             json.dump(data, f)
-            print("Data saved successfully.")
+            print("Данные успешно сохранены.")
 
         while True:
-            continue_editing = input("Do you want to edit something else for this employee? (yes / no): ")
+            continue_editing = input("Вы хотите отредактировать что-то еще для этого сотрудника? (да/нет): ")
 
-            if continue_editing == "yes":
-                choice = input("What would you like to edit? (Name / Surname / Middle_name / age / desired position / experience): ")
+            if continue_editing == "да":
+                choice = input("Что бы вы хотели отредактировать? (Имя / Фамилия / Отчество / возраст / желаемая должность / опыт работы / ID): ")
 
-                if choice == "Name":
-                    new_Name = input("Enter the new Name: ")
-                    employee['Name'] = new_Name
-                    print("Name updated successfully.")
-                elif choice == "Surname":
-                    new_Surname = int(input("Enter the new age: "))
-                    employee['Surname'] = new_Surname
-                    print("Surname updated successfully.")
-                elif choice == "Middle_name":
-                    new_Middle_name = input("Enter the new Middle_name: ")
-                    employee['Middle_name'] = new_Middle_name
-                    print("Middle_name updated successfully.")
-                elif choice == "age":
-                    new_age = input("Enter the new age: ")
-                    employee['age'] = new_age
-                    print("age updated successfully.")
-                elif choice == "desired position":
-                    new_desired_position = input("Enter the new desired position: ")
-                    employee['desired position'] = new_desired_position
-                    print("Desired position updated successfully.")
-                elif choice == "experience":
-                    new_experience = input("Enter the new experience: ")
-                    employee['experience'] = new_experience
-                    print("experience updated successfully.")
-                elif choice == "exit":
+                if choice == "Имя":
+                    new_Name = input("Введите в новый Имя: ")
+                    employee['Имя'] = new_Name
+                    print("Имя успешно обновлено.")
+                elif choice == "Фамилия":
+                    new_Surname = int(input("Введите в новый Фамилия: "))
+                    employee['Фамилия'] = new_Surname
+                    print("Фамилия успешно обновлено.")
+                elif choice == "Отчество":
+                    new_Middle_name = input("Введите в новый Отчество: ")
+                    employee['Отчество'] = new_Middle_name
+                    print("Отчество успешно обновлено.")
+                elif choice == "Возраст":
+                    new_age = input("Введите в новый Возраст: ")
+                    employee['Возраст'] = new_age
+                    print("Возраст успешно обновлено.")
+                elif choice == "желаемое положение":
+                    new_desired_position = input("Введите в новый желаемое положение: ")
+                    employee['желаемое положение'] = new_desired_position
+                    print("Имя успешно обновлено.")
+                elif choice == "опыт":
+                    new_experience = input("Введите в новый опыт: ")
+                    employee['опыт'] = new_experience
+                    print("опыт успешно обновлено.")
+                elif choice == "ID":
+                    new_experience = input("Введите в новый ID: ")
+                    employee['ID'] = new_experience
+                    print("ID успешно обновлено.")
+                elif choice == "выход":
                     break
                 else:
-                    print("Invalid choice. Please try again.")
+                    print("Неверный выбор. Пожалуйста, попробуйте снова.")
 
                 with open('the_database.json', 'w') as f:
                     json.dump(data, f)
                     print("Data saved successfully.")
-            elif continue_editing == "no":
+            elif continue_editing == "нет":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("Неверный выбор. Пожалуйста, попробуйте снова.")
 
         while True:
-            continue_editing_employee = input("Do you want to edit another employee? (yes / no): ")
+            continue_editing_employee = input("Вы хотите отредактировать другого сотрудника? (да/нет): ")
 
-            if continue_editing_employee == "yes":
+            if continue_editing_employee == "да":
                 editing_employees()
                 break
-            elif continue_editing_employee == "no":
+            elif continue_editing_employee == "нет":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("Неверный выбор. Пожалуйста, попробуйте снова.")
     else:
-        print("Invalid employee ID.")
+        print("Неверный идентификатор сотрудника.")
 
 
 
@@ -121,20 +129,23 @@ def get_all_employees():
 
     for employee in employees:
         try:
-            print("FIO:", employee['FIO'])
-            print("Age:", employee['age'])
-            print("Weight:", employee['weight'])
+            print("Имя:", employee['Имя'])
+            print("Фамилия:", employee['Фамилия'])
+            print("Отчество:", employee['Отчество'])
+            print("Возраст:", employee['Возраст'])
+            print("желаемое положение:", employee['желаемое положение'])
+            print("опыт:", employee['опыт'])
             print("ID:", employee['ID'])
             print()
         except KeyError:
-            print("Missing key in employee data:", employee)
+            print("Отсутствующий ключ в данных о сотрудниках:", employee)
 
 def removing_employees(employee_id):
-    # Read the data from the file
+    # Считайте данные из файла
     with open('the_database.json', 'r') as file:
         data = json.load(file)
 
-    # Find and remove the employee with the given ID
+    # Найдите и удалите сотрудника с указанным идентификатором
     removed_employee = None
     for employee in data:
         if employee['ID'] == str(employee_id):
@@ -142,11 +153,10 @@ def removing_employees(employee_id):
             data.remove(employee)
             break
 
-    # Write the updated data back to the file
+    # Запишите обновленные данные обратно в файл
     with open('the_database.json', 'w') as file:
         json.dump(data, file)
     return removed_employee
-
 
 
 def See_everyone_who_wants_to_get_a_job():
@@ -159,20 +169,13 @@ def Get_everyone_to_work():
     Pass
 
 
-
 def fire_employees():
      # Clear the contents of the file
     with open('the_database.json', 'w') as file:
          file.write('[]')
+
     with open('user_data.json', 'w') as file:
          file.write('[]')
-
-
-
-
-
-
-
 
 
 
@@ -187,91 +190,91 @@ def fire_employees():
 def user():
     n = 1
     Basket = []
-    list_menu = ["Cappuccino", "American", "Espresso", "Cheesecake", "Cream soup"]
+    list_menu = ["Капучино", "Американо", "Эспрессо", "Чизкейк", "Крем-суп"]
     while n >= 1 and n < 5:
 
         def total_price_1():
             global Total_price
-            Total_price = Basket.count('Cappuccino') * 150 + Basket.count('American') * 120 + Basket.count(
-                'Espresso') * 80 + Basket.count('Cheesecake') * 100 + Basket.count('Cream soup') * 250
-            print("You have bought goods for the amount of: ", Total_price)
+            Total_price = Basket.count('Капучино') * 150 + Basket.count('Американо') * 120 + Basket.count(
+                'Эспрессо') * 80 + Basket.count('Чизкейк') * 100 + Basket.count('Крем-суп') * 250
+            print("Вы приобрели товары на сумму: ", Total_price)
 
         def menu_1(menu):
             menu_2()
         print(menu_1(1))
-        Action_selection = int(input("Enter the number of the desired action:"))
+        Action_selection = int(input("Введите номер желаемого действия:"))
 
         def go_to_order_1(go_to_order):
             menu_3 = ("\n─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──\n"
-                      "\n 1 - Cappuccino - 150 rubles"
-                      "\n 2 - American - 120 rubles"
-                      "\n 3 - Espresso - 80 rubles "
-                      "\n 4 - Cheesecake - 100 rubles "
-                      "\n 5 - Cream soup - 250 rubles"
+                      "\n 1 - Капучино - 150 рублей"
+                      "\n 2 - Американо - 120 рублей"
+                      "\n 3 - Эспрессо - 80 рублей "
+                      "\n 4 - Чизкейк - 100 рублей "
+                      "\n 5 - Крем-суп - 250 рублей"
                       "\n─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──\n")
             print(menu_3)
-            go_to_order_2 = int(input("Enter the number of the product you want to order:"))
+            go_to_order_2 = int(input("Введите номер товара, который вы хотите заказать:"))
 
             if go_to_order_2 == 1:
-                Basket.append("Cappuccino")
+                Basket.append("Капучино")
             elif go_to_order_2 == 2:
-                Basket.append('American')
+                Basket.append('Американо')
             elif go_to_order_2 == 3:
-                Basket.append('Espresso')
+                Basket.append('Эспрессо')
             elif go_to_order_2 == 4:
-                Basket.append('Cheesecake')
+                Basket.append('Чизкейк')
             elif go_to_order_2 == 5:
-                Basket.append('Cream soup')
+                Basket.append('Крем-суп')
 
         def payment_1(payment):
             total_price_1()
-            print(('\n Enter the payment method:\n 1 - by map \n 2 - in cash '))
+            print(('\n Введите способ оплаты:\n 1 - по карте \n 2 - наличными '))
             sposob_oplaty = int(input())
             if sposob_oplaty == 2:
-                Bill_for_payment = int(input("Enter the amount of payment in cash: "))
+                Bill_for_payment = int(input("Введите сумму платежа наличными: "))
                 if Bill_for_payment > Total_price:
-                    print("Here's your change:", Bill_for_payment - Total_price)
-                    print("Thanks for the purchase!")
+                    print("Вот твоя сдача:", Bill_for_payment - Total_price)
+                    print("Спасибо за покупку!")
                 elif Bill_for_payment == Total_price:
-                    print("Thanks for the purchase!")
+                    print("Спасибо за покупку!")
                 else:
-                    print("You did not give enough money to pay for the order!")
+                    print("Вы не дали достаточно денег для оплаты заказа!")
             if sposob_oplaty == 1:
-                print("Thanks for the purchase!")
+                print("Спасибо за покупку!")
 
         def cart_1(cart):
             print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
-            print('1 - ', 'Cappuccino:', Basket.count('Cappuccino'), " - ", Basket.count('Cappuccino') * 150)
-            print('2 - ', 'American:', Basket.count('American'), " - ", Basket.count('American') * 120)
-            print('3 - ', 'Espresso:', Basket.count('Espresso'), " - ", Basket.count('Espresso') * 80)
-            print('4 - ', 'Cheesecake:', Basket.count('Cheesecake'), " - ", Basket.count('Cheesecake') * 100)
-            print('5 - ', 'Cream soup:', Basket.count('Cream soup'), " - ", Basket.count('Cream soup') * 250)
+            print('1 - ', 'Капучино:', Basket.count('Капучино'), " - ", Basket.count('Капучино') * 150)
+            print('2 - ', 'Американо:', Basket.count('Американо'), " - ", Basket.count('Американо') * 120)
+            print('3 - ', 'Эспрессо:', Basket.count('Эспрессо'), " - ", Basket.count('Эспрессо') * 80)
+            print('4 - ', 'Чизкейк:', Basket.count('Чизкейк'), " - ", Basket.count('Чизкейк') * 100)
+            print('5 - ', 'Крем-суп:', Basket.count('Крем-суп'), " - ", Basket.count('Крем-суп') * 250)
 
             total_price_1()
             print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
 
         def change_basket():
 
-            change = int(input("Enter the sequence number of what you would like to change\n "))
-            print("Do you want to change the number", list_menu[change - 1],
-                  "?\n 0 - reduce , 1 - increase")
+            change = int(input("Введите порядковый номер того, что вы хотели бы изменить\n "))
+            print("Вы хотите изменить номерr", list_menu[change - 1],
+                  "?\n 0 - уменьшить , 1 - увеличение")
             number = int(input())
             if number == 0:
-                number_1 = int(input("Add the number you want to reduce by:"))
+                number_1 = int(input("Добавьте число, которое вы хотите уменьшить на:"))
                 while number_1 > 0:
                     Basket.remove(list_menu[change - 1])
                     number_1 = number_1 - 1
             elif number == 1:
-                number_1 = int(input("Add the number you want to increase by: "))
+                number_1 = int(input("Добавьте число, на которое вы хотите увеличить: "))
                 while number_1 > 0:
                     Basket.append(list_menu[change - 1])
                     number_1 = number_1 - 1
 
         def editing_cart_1(editing_cart):
             while True:
-                cart_1("cart")
+                cart_1("корзина")
 
-                go_mane_menu = input("Do you want to go back? if yes, write (1) \n")
+                go_mane_menu = input("Вы хотите вернуться? если да, напишите (1) \n")
                 if int(go_mane_menu) == 1:
                     break
                 else:
@@ -287,7 +290,7 @@ def user():
         elif Action_selection == 4:
             editing_cart_1("editing_cart")
         elif Action_selection == 5:
-            print("Goodbye!")
+            print("До свидания!")
             break
 
 
@@ -316,7 +319,7 @@ def Sending_a_job_application():
     @bot.message_handler(commands=['start'])
     def start(message):
         bot.send_message(message.chat.id,
-                         "Привет! Отправь мне свои данные: Имя, Фамилию, Отчество, Возраст, Желаемое место работы и Стаж, каждое на новой строке.")
+                         "Привет! Отправь мне свои данные: Имя, Фамилию, Отчество, Возраст, Желаемое место работы, Стаж и Айди, каждое на новой строке.")
 
     @bot.message_handler(func=lambda message: True)
     def get_user_data(message):
