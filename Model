@@ -163,7 +163,7 @@ def See_everyone_who_wants_to_get_a_job():
     with open('user_data.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
-        print(json.dumps(data, indent=4, ensure_ascii=False))
+        print(json.dumps(data, indent=4, ensure_ascii=False))   
 
 def Get_everyone_to_work():
     Pass
