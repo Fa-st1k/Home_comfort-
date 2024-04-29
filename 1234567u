@@ -1,214 +1,268 @@
+from model import editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
+from view import display_menu,  display_success, display_error
+import json
 import tkinter as tk
+from tkinter import *
 from tkinter import messagebox
-from tkinter import simpledialog
-from tkinter import font
-# создание класса
-class CoffeeShopApp:
-    # инициализация основного окна приложения
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Home comfort")
-        self.Basket = []
+import hashlib
+from tkinter import ttk
+import webbrowser
 
-        self.label = tk.Label(master, text="Добро пожаловать в кофейню!")
-        self.label.pack()
+def main():
+    employee_list = []
 
-        self.button_order = tk.Button(master, text="Заказать", command=self.go_to_order)
-        self.button_order.pack()
+    while True:
+        display_menu()
+        choice = input("\nSelect an action (1-7): ")
 
-        self.button_payment = tk.Button(master, text="Оплатить", command=self.payment)
-        self.button_payment.pack()
+        if choice == "1":
+            root6 = tk.Tk()
+            root6.title("Employee Registration")
+            root6.geometry("400x400")
 
-        self.button_cart = tk.Button(master, text="Корзина", command=self.cart)
-        self.button_cart.pack()
+            labels = ["Имя", "Фамилия", "Отчество", "Возраст", "желаемое положение", "опыт", "ID"]
+            entries = []
+            for label_text in labels:
+                label = tk.Label(root6, text=label_text)
+                label.pack()
+                entry = tk.Entry(root6)
+                entry.pack()
+                entries.append(entry)
 
-        self.button_edit_cart = tk.Button(master, text="Редактировать корзину", command=self.edit_cart)
-        self.button_edit_cart.pack()
+            employee_list = []
 
-        self.button_exit = tk.Button(master, text="Выход", command=master.quit)
-        self.button_exit.pack()
+            def submit_callback():
+                The_database = {}
+                for i, entry in enumerate(entries):
+                    value = entry.get()
+                    if i == 3:
+                        value = int(value)
+                    the_database[labels[i]] = value
 
-        # Определение размеров экрана
-        screen_width = master.winfo_screenwidth()
-        screen_height = master.winfo_screenheight()
-        # Определение размеров окна
-        window_width = 300
-        window_height = 200
-        # Вычисление координат для расположения окна по центру
-        x = (screen_width // 2) - (window_width // 2)
-        y = (screen_height // 2) - (window_height // 2)
-        # Установка положения окна
-        master.geometry(f"{window_width}x{window_height}+{x}+{y}")
+                employee_list.append(The_database)
 
-    # общая стоимость товаров в корзине
-    def total_price(self):
-        Total_price = self.Basket.count('Капучино') * 150 + self.Basket.count('Американо') * 120 + \
-                      self.Basket.count('Эспрессо') * 80 + self.Basket.count('Чизкейк') * 100 + \
-                      self.Basket.count('Крем-суп') * 250
-        return Total_price
+                with open('The_database.json', 'w', encoding='utf-8') as f:
+                    json.dump(employee_list, f, ensure_ascii=False, indent=2)
 
-    # добавление выбранного товара в корзину.
-    def go_to_order(self):
-        self.menu_window = tk.Toplevel(self.master)
-        self.menu_window.title("Меню заказа")
+                success_label = tk.Label(root6, text="Сотрудник успешно принят.")
+                success_label.pack()
 
-        self.menu_label = tk.Label(self.menu_window, text="Выберите товар для заказа:")
-        self.menu_label.pack()
+                for entry in entries:
+                    entry.delete(0, tk.END)
 
-        self.list_menu = ["Капучино", "Американо", "Эспрессо", "Чизкейк", "Крем-суп"]
-        self.menu_buttons = []
-        for item in self.list_menu:
-            button = tk.Button(self.menu_window, text=item, command=lambda i=item: self.add_to_basket(i))
-            button.pack()
-            self.menu_buttons.append(button)
+            submit_button = tk.Button(root6, text="Отправить", command=submit_callback)
+            submit_button.pack()
 
-        self.close_button = tk.Button(self.menu_window, text="Закрыть", command=self.menu_window.destroy)
-        self.close_button.pack()
-
-    def add_to_basket(self, item):
-        self.Basket.append(item)
-        root1 = tk.Tk()
-        root1.title("Сообщение")
-        root1.geometry("200x100")
-        label_font = font.Font(family="Arial", size=10, weight="bold")
-        label_text = tk.Label(root1, text="Добавлено в корзину", font=label_font)
-        label_text.place(relx=0.5, rely=0.5, anchor="center")
-        def close_window():
-            root1.destroy()
-        root1.after(500, close_window)
-        root.mainloop()
-
-    def edit_cart(self):
-        edit_window = tk.Toplevel(self.master)
-        edit_window.title("Редактировать корзину")
-
-        self.edit_label = tk.Label(edit_window, text="Выберите товар для редактирования:")
-        self.edit_label.pack()
-
-        self.edit_buttons = []
-        for item in self.Basket:
-            button = tk.Button(edit_window, text=f"{item} ({self.Basket.count(item)})",
-                               command=lambda i=item: self.change_quantity(i, edit_window))
-            button.pack()
-            self.edit_buttons.append(button)
-
-        self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
-        self.close_button.pack()
-    def change_quantity(self, item, edit_window):
-        change_window = tk.Toplevel(edit_window)
-        change_window.title(f"Изменить количество {item}")
-
-        self.change_label = tk.Label(change_window, text=f"Текущее количество: {self.Basket.count(item)}")
-        self.change_label.pack()
-
-        self.add_button = tk.Button(change_window, text="Увеличить", command=lambda: self.add_item(item))
-        self.add_button.pack()
-
-        self.remove_button = tk.Button(change_window, text="Уменьшить", command=lambda: self.remove_item(item))
-        self.remove_button.pack()
-
-    def add_item(self, item):
-        self.Basket.append(item)
-        self.refresh_edit_window()
-
-    def remove_item(self, item):
-        self.Basket.remove(item)
-        self.refresh_edit_window()
-
-    def refresh_edit_window(self):
-        for button in self.edit_buttons:
-            button.destroy()
-
-        for item in self.Basket:
-            button = tk.Button(self.edit_window, text=f"{item} ({self.Basket.count(item)})",
-                               command=lambda i=item: self.change_quantity(i, self.edit_window))
-            button.pack()
-            self.edit_buttons.append(button)
-
-    # оплата
-    def payment(self):
-
-        total_price = self.total_price()
-
-        def process_card_payment():
-            messagebox.showinfo('Оплата', "Оплата по карте")
-            messagebox.showinfo('Оплата', "Спасибо за покупку!")
-
-        def process_cash_payment():
-            cash_payment = simpledialog.askinteger("Оплата наличными",
-                                                       f"Общая стоимость: {total_price}\nВведите сумму наличных:")
-            if cash_payment is not None:
-                if cash_payment > total_price:
-                    change = cash_payment - total_price
-                    messagebox.showinfo('Оплата', f"Ваша сдача: {change}")
-                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
-                elif cash_payment == total_price:
-                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
-                else:
-                    messagebox.showinfo('Оплата', "Вы не дали достаточно денег для оплаты заказа!")
-
-        payment_window = tk.Toplevel(root)
-        payment_window.title("Оплата")
-        payment_window.geometry("300x200")
-        payment_method_label = tk.Label(payment_window, text=f"Общая сумма к оплате: {total_price} руб.")
-        payment_method_label.pack(pady=10)
-        payment_method_label = tk.Label(payment_window, text="Выберите способ оплаты:")
-        payment_method_label.pack(pady=10)
-        card_button = tk.Button(payment_window, text="Оплата картой", command=process_card_payment)
-        card_button.pack(pady=5)
-        cash_button = tk.Button(payment_window, text="Оплата наличными", command=process_cash_payment)
-        cash_button.pack(pady=5)
+            root6.mainloop()
+        elif choice == "2":
+            get_all_employees()
+        elif choice == "3":
+            editing_employees()
+        elif choice == "4":
+            removing_employees()
+        elif choice == "5":
+            create_main_window()
+        elif choice == "6":
+            Get_everyone_to_work()
+        elif choice == "7":
+            fire_employees()
+        elif choice == "8":
+            fire_employees()
+            print("Exiting the program.")
+            break
+        else:
+            display_error("Wrong choice. Please choose from this")
 
 
 
+def start1():
+    def click10():
+        mainroot.destroy()
+    def click8():
+        mainroot.destroy()
 
-    # корзина
-    def cart(self):
-        cart_window = tk.Toplevel(self.master)
-        cart_window.title("Корзина")
+        def hash(input_text):
+            hash_object = hashlib.sha256()
+            hash_object.update(input_text.encode())
+            hashed_bytes = hash_object.digest()
+            hashed_text = ''.join(format(byte, '02x') for byte in hashed_bytes)
+            return hashed_text
 
-        self.cart_label = tk.Label(cart_window, text="Содержимое корзины:")
-        self.cart_label.pack()
-
-        # Создаем словарь для хранения товаров и их количества
-        cart_items = {}
-        for item in self.Basket:
-            if item in cart_items:
-                cart_items[item] += 1
-            else:
-                cart_items[item] = 1
-
-        # Выводим название товара и его количество
-        for item, quantity in cart_items.items():
-            label = tk.Label(cart_window, text=f"{item}: {quantity}")
-            label.pack()
-
-        self.total_price_label = tk.Label(cart_window, text=f"Общая сумма: {self.total_price()} руб.")
-        self.total_price_label.pack()
-
-    def edit_cart(self):
-        edit_window = tk.Toplevel(self.master)
-        edit_window.title("Редактировать корзину")
-
-        # Создаем словарь для хранения товаров и их количества
-        cart_items = {}
-        for item in self.Basket:
-            if item in cart_items:
-                cart_items[item] += 1
-            else:
-                cart_items[item] = 1
-
-        # Создаем кнопки для редактирования количества товаров
-        for item, quantity in cart_items.items():
-            button = tk.Button(edit_window, text=f"{item} ({quantity})",
-                               command=lambda i=item: self.change_quantity(i, edit_window))
-            button.pack()
-
-        self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
-        self.close_button.pack()
+        def check1():
+            login = entry_login.get()
+            password = entry_password.get()
+            with open('admin ', 'r') as file:
+                for line in file:
+                    login1, password1 = line.strip().split(',')
+                    if login == login1 and hash(password) == password1:
+                        root8.destroy()
+                        messagebox.showinfo("Отлично", "Вы авторизовались!")
+                        main()
+                        return
+                messagebox.showerror("Ошибка", "Неверный логин или пароль!")
 
 
-# Создание основного окна
-root = tk.Tk()
-app = CoffeeShopApp(root)
-root.mainloop()
+    def click9():
+        mainroot.destroy()
+        click5()
+
+
+    def click5():
+        def hash(input_text):
+            hash_object = hashlib.sha256()
+            hash_object.update(input_text.encode())
+            hashed_bytes = hash_object.digest()
+            hashed_text = ''.join(format(byte, '02x') for byte in hashed_bytes)
+            return hashed_text
+
+        def check():
+            login = entry_login.get()
+            password = entry_password.get()
+
+            with open('txt', 'r') as file:
+                for line in file:
+                    login1, password1 = line.strip().split(',')
+                    if login == login1 and hash(password) == password1:
+                        root5.destroy()
+                        messagebox.showinfo("Отлично", "Вы авторизовались!")
+                        user()
+                        return
+                messagebox.showerror("Ошибка", "Неверный логин или пароль!")
+
+        def click6():
+            root5.destroy()
+            root6 = Tk()
+            root6.title('Home comfort')
+            root6.resizable(False, False)
+
+            def register():
+                login = entry_login1.get()
+                password = entry_password1.get()
+
+                login1 = None
+
+                with open('txt', 'r') as file:
+                    for line in file:
+                        login1, _ = line.strip().split(',')
+                        if login1 == login:
+                            messagebox.showerror("Ошибка", "Пользователь с таким логином уже существует.")
+                            return
+
+                with open('txt', 'a') as file:
+                    hashed_password = hash(password)
+                    if login != '' and password != '' and login1 != login:  # Проверка на уникальность логина
+                        root6.destroy()
+                        messagebox.showinfo("Отлично", "Вы зарегистрировались!")
+                        file.write(f"{login},{hashed_password}\n")
+                        click5()
+                    else:
+                        messagebox.showinfo("Ошибка", "Вы ввели некорректные данные.")
+
+            label_login1 = tk.Label(root6, text="Логин:")
+            label_login1.pack()
+            entry_login1 = tk.Entry(root6)
+            entry_login1.pack()
+            label_password1 = tk.Label(root6, text="Пароль:")
+            label_password1.pack()
+            entry_password1 = tk.Entry(root6, show="*")
+            entry_password1.pack()
+            button_register1 = tk.Button(root6, text="Зарегестрироваться", command=register)
+            button_register1.pack()
+
+            def back():
+                root6.destroy()
+                click5()
+
+            btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Предыдущая страница', bd=10, fg='#fff',
+                          bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+            btn4.pack()
+
+        root5 = tk.Tk()
+        root5.title('Аккаунт')
+        root5.resizable(width=False, height=False)
+        label_login = tk.Label(root5, text="Логин:")
+        label_login.pack()
+        entry_login = tk.Entry(root5)
+        entry_login.pack()
+        label_password = tk.Label(root5, text="Пароль:")
+        label_password.pack()
+        entry_password = tk.Entry(root5, show="*")
+        entry_password.pack()
+        button_login = tk.Button(root5, text="Войти", command=check)
+        button_register = tk.Button(root5, text="Зарегестрироваться", command=click6)
+        button_login.pack()
+        button_register.pack()
+
+        def back():
+            root5.destroy()
+            start()
+
+        btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Главная страница', bd=10, fg='#fff',
+                      bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+        btn4.pack()
+
+
+
+    def open_link(event):
+        url = "https://web.telegram.org/k/#@ItprrogerTestbot"
+        webbrowser.open(url)
+
+    root125 = tk.Tk()
+    def click15(root_window):
+        mainroot2 = tk.Toplevel(root_window)
+        mainroot2.destroy()
+        root125 = tk.Tk()
+        root125.resizable(False, False)
+        root125.title('Home comfort')
+
+        def back():
+            root125.destroy()
+            start()
+
+        label1 = tk.Label(root125, text="Зарегистрируйтесь здесь")
+        label1.pack()
+        label = tk.Label(root125, text="Нажмите сюда, чтобы перейти на телеграмм бота для регистрации", fg="blue",
+                             cursor="hand2")
+        label.pack(pady=20)
+
+        label.bind("<Button-1>", open_link)
+        btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Главная страница', bd=10, fg='#fff',
+                          bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+        btn4.pack()
+
+
+    click15(root125)
+    Sending_a_job_application()
+
+
+
+
+
+    mainroot = tk.Tk()
+    mainroot.title('Home comfort')
+    mainroot.resizable(False, False)
+    w = 804
+    h = 500
+    ws = mainroot.winfo_screenwidth()
+    hs = mainroot.winfo_screenheight()
+    x = (ws / 2) - (w / 2)
+    y = (hs / 2) - (h / 2)
+    mainroot.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    btn = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Режим админа', bd=5, cursor='hand2')
+    btn.place(x=10, y=120)
+    btn3 = Button(height=15, width=30, command=click15, padx=5, pady=5, text='Режим подачи заявки', bd=5, cursor='hand2')
+    btn3.place(x=285, y=120)
+    btn2 = Button(height=15, width=30, command=click9, padx=5, pady=5, text="Пользовательский режим", bd=5, cursor='hand2')
+    btn2.place(x=560, y=120)
+    btn4 = Button(height=5, width=20, command=click10, padx=5, pady=5, text='Exit', bd=10, fg='#fff',
+                    bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+    btn4.place(x=320, y=390)
+    mainroot.mainloop()
+
+    root = tk.Tk()
+    root.mainloop()
+
+start1()
+
+if __name__ == "main":
+    main()
