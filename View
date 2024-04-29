@@ -9,13 +9,12 @@ def my_decorator_display_menu(display_menu):
 
 @my_decorator_display_menu
 def display_menu():
-    print("1 - Add an employee") #Добавить сотрудника
-    print("2 - View all employees") #Посмотреть всех сотрудников
-    print("3 - Edit employees") #Редактирование сотрудников
-    print("4 - Dismiss an employee") #Увольнение сотрудника
-    print("5 - See everyone who wants to get a job")  # Посмотреть всех желающих устроиться на работу
-    print("6 - Get everyone to work")  # Устроить на работу всех желающих
-    print("7 - Become bankrupt and fire everyone")  # Стать банкротом и уволить всех
+    print("1 - Добавить сотрудника")
+    print("3 - Редактирование сотрудников")
+    print("4 - Увольнение сотрудника")
+    print("5 - Посмотреть всех желающих устроиться на работу")
+    print("6 - Устроить на работу всех желающих")
+    print("7 - Стать банкротом и уволить всех")
 
 
 def display_success(message):
