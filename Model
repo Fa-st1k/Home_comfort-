@@ -128,21 +128,62 @@ def editing_employees():
 
 
 def get_all_employees():
-    with open('the_database.json', 'r') as f:
-        employees = json.load(f)
-
-    for employee in employees:
+    def open1():
         try:
-            print("Имя:", employee['Имя'])
-            print("Фамилия:", employee['Фамилия'])
-            print("Отчество:", employee['Отчество'])
-            print("Возраст:", employee['Возраст'])
-            print("желаемое положение:", employee['желаемое положение'])
-            print("опыт:", employee['опыт'])
-            print("ID:", employee['ID'])
-            print()
-        except KeyError:
-            print("Отсутствующий ключ в данных о сотрудниках:", employee)
+            with open('the_database.json', 'r', encoding='utf-8') as f:
+                employees = json.load(f)
+
+        except FileNotFoundError:
+            employees = []
+
+        employee_window = tk.Toplevel(root)
+        employee_window.title("Список сотрудников")
+
+        employee_list = tk.Listbox(employee_window, width=50)
+        employee_list.pack(side=tk.LEFT, fill=tk.BOTH)
+
+        for employee in employees:
+            try:
+                name = f"{employee['Имя']} {employee['Фамилия']} {employee['Отчество']}"
+                age = employee['Возраст']
+                position = employee['желаемое положение']
+                experience = employee['опыт']
+                employee_id = employee['ID']
+                employee_list.insert(tk.END, f"{name} ({age}) - {position}, опыт: {experience}, ID: {employee_id}")
+            except KeyError:
+                employee_list.insert(tk.END, f"Отсутствующий ключ в данных о сотруднике: {employee}")
+
+        def show_employee_details(event):
+            selection = employee_list.curselection()
+            if selection:
+                index = selection[0]
+                employee_data = employees[index]
+                details_text.delete(1.0, tk.END)
+                details_text.insert(tk.END, f"Имя: {employee_data.get('Имя', 'Неизвестно')}\n")
+                details_text.insert(tk.END, f"Фамилия: {employee_data.get('Фамилия', 'Неизвестно')}\n")
+                details_text.insert(tk.END, f"Отчество: {employee_data.get('Отчество', 'Неизвестно')}\n")
+                details_text.insert(tk.END, f"Возраст: {employee_data.get('Возраст', 'Неизвестно')}\n")
+                details_text.insert(tk.END,
+                                    f"Желаемое положение: {employee_data.get('желаемое положение', 'Неизвестно')}\n")
+                details_text.insert(tk.END, f"Опыт: {employee_data.get('опыт', 'Неизвестно')}\n")
+                details_text.insert(tk.END, f"ID: {employee_data.get('ID', 'Неизвестно')}\n")
+
+        employee_list.bind('<<ListboxSelect>>', show_employee_details)
+
+        details_frame = tk.Frame(employee_window)
+        details_frame.pack(side=tk.LEFT, fill=tk.BOTH)
+
+        details_text = tk.Text(details_frame, width=40, height=20)
+        details_text.pack(fill=tk.BOTH)
+
+    root = tk.Tk()
+    root.title("Список сотрудников")
+
+    get_employees_button = tk.Button(root, text="Получить список сотрудников", command=open1)
+    get_employees_button.pack()
+
+    root.mainloop()
+
 
 def removing_employees(employee_id):
     # Считайте данные из файла
@@ -211,7 +252,7 @@ def create_main_window():
     root4 = tk.Tk()
     root4.title("Приложение")
 
-    button = tk.Button(root4, text="Показать соискателей работы", command=lambda: See_everyone_who_wants_to_get_a_job(root4))
+    button = tk.Button(root4, text="Показать желаемых работников", command=lambda: See_everyone_who_wants_to_get_a_job(root4))
     button.pack()
 
     root4.mainloop()
