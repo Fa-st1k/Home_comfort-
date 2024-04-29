@@ -32,7 +32,7 @@ def main():
                     value = entry.get()
                     if i == 3:
                         value = int(value)
-                    The_database[labels[i]] = value
+                    the_database[labels[i]] = value
 
                 employee_list.append(The_database)
 
@@ -50,7 +50,7 @@ def main():
 
             root6.mainloop()
         elif choice == "2":
-            get_all_employees(root3)
+            get_all_employees()
         elif choice == "3":
             editing_employees()
         elif choice == "4":
