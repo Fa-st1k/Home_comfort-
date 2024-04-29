@@ -73,7 +73,7 @@ def start():
                 root6.destroy()
                 click5()
 
-            btn4 = Button(height=1, width=10, command=back, padx=5, pady=5, text='Previous page', bd=10, fg='#fff',
+            btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Предыдущая страница', bd=10, fg='#fff',
                           bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
             btn4.pack()
 
@@ -96,7 +96,7 @@ def start():
             root5.destroy()
             start()
 
-        btn4 = Button(height=1, width=10, command=back, padx=5, pady=5, text='Main page', bd=10, fg='#fff',
+        btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Главная страница', bd=10, fg='#fff',
                       bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
         btn4.pack()
 
@@ -149,13 +149,13 @@ def start():
             scrollbar = ttk.Scrollbar(root3, orient="horizontal", command=listbox.xview)
             scrollbar.pack(side=tk.BOTTOM, fill=X)
             listbox["xscrollcommand"] = scrollbar.set
-            btn4 = Button(height=4, width=10, command=delete_account, padx=5, pady=5, text='delete_account', bd=2, fg='#fff',
-                          bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
-            btn5 = Button(height=2, width=10, command=exit, padx=5, pady=5, text='Previous page', bd=2,
+            btn4 = Button(height=4, width=15, command=delete_account, padx=5, pady=5, text='Удаление аккаунта', bd=2, fg='#fff',
+                          bg='#fc2646', underline=5, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+            btn5 = Button(height=2, width=18, command=exit, padx=5, pady=5, text='Предыдущая страница', bd=2,
                           fg='#fff',
-                          bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
-            btn5.place(x=50, y=340)
-            btn4.place(x=50, y=250)
+                          bg='#000', underline=5, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+            btn5.place(x=30, y=340)
+            btn4.place(x=40, y=250)
             label_login = tk.Label(root3, text="Логин:")
             label_login.place(x=60, y=10)
             entry_login = tk.Entry(root3)
@@ -187,30 +187,30 @@ def start():
             root7.destroy()
 
         w = 1360
-        s = 500
-        root7.geometry('%dx%d+%d+%d' % (w, s, x - 300, y))
-        root7.configure(bg="#00FFFF")
-        btn = Button(height=15, width=30, command=click3, padx=5, pady=5, text='User delete', bd=5, fg='#000', bg='#cda4de',
-                     underline=0, activebackground='#000', activeforeground='#000', cursor='hand2')
-        btn.place(x=10, y=120)
-        btn2 = Button(height=15, width=30, command=click13, padx=5, pady=5, text='Fire everyone', bd=5, fg='#000', bg='#cda4de',
-                      underline=0, activebackground='#000', activeforeground='#000', cursor='hand2')
-        btn2.place(x=560, y=120)
-        btn3 = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Admin mode', bd=5, fg='#000', bg='#cda4de',
-                      underline=0, activebackground='#000', activeforeground='#000', cursor='hand2')
-        btn3.place(x=285, y=120)
-        btn6 = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Admin mode', bd=5, fg='#000', bg='#cda4de',
-                      underline=0, activebackground='#000', activeforeground='#000', cursor='hand2')
-        btn6.place(x=835, y=120)
-        btn5 = Button(height=15, width=30, command=click12, padx=5, pady=5, text='Go bankrupt and fire everyone', bd=5, fg='#000', bg='#cda4de',
-                      underline=0, activebackground='#000', activeforeground='#000', cursor='hand2')
-        btn5.place(x=1110, y=120)
+        s = 700
+        root7.geometry('%dx%d+%d+%d' % (w, s, x - 300, y - 150))
+        btn = Button(height=10, width=25, command=click3, padx=5, pady=5, text='Удаление пользователя', bd=5, cursor='hand2')
+        btn.place(x=285, y=270)
+        btn2 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Посмотреть всех\n сотрудников', bd=5, cursor='hand2')
+        btn2.place(x=285, y=30)
+        btn3 = Button(height=10, width=25, command=click13, padx=5, pady=5, text='Редактирование сотрудников', bd=5, cursor='hand2')
+        btn3.place(x=560, y=30)
+        btn6 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Увольнение сотрудника', bd=5, cursor='hand2')
+        btn6.place(x=835, y=30)
+        btn5 = Button(height=10, width=25, command=click12, padx=5, pady=5, text='Стать банкротом\n и уволить всех', bd=5, cursor='hand2')
+        btn5.place(x=835, y=270)
+        btn8 = Button(height=10, width=25, command=click13, padx=5, pady=5, text='Добавить сотрудника', bd=5, fg='#000', cursor='hand2')
+        btn8.place(x=285, y=510)
+        btn7 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Устроить на работу\n всех желающих', bd=5, cursor='hand2')
+        btn7.place(x=560, y=510)
+        btn9 = Button(height=10, width=25, command=click12, padx=5, pady=5, text='Посмотреть всех желающих\n устроиться на работу', bd=5, cursor='hand2')
+        btn9.place(x=835, y=510)
         def back():
             root7.destroy()
             start()
-        btn4 = Button(height=5, width=20, command=back, padx=5, pady=5, text='Main page', bd=10, fg='#fff',
+        btn4 = Button(height=10, width=25, command=back, padx=5, pady=5, text='Главная страница', bd=5, fg='#fff',
                       bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
-        btn4.place(x=595, y=390)
+        btn4.place(x=560, y=270)
 
 
     def click8():
@@ -251,7 +251,7 @@ def start():
         def back():
             root8.destroy()
             start()
-        btn4 = Button(height=1, width=6, command=back, padx=5, pady=5, text='Main page', bd=10, fg='#fff',
+        btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Главная страница', bd=10, fg='#fff',
                       bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
         btn4.pack()
 
@@ -259,7 +259,6 @@ def start():
     mainroot = Tk()
     mainroot.title('Home comfort')
     mainroot.resizable(False, False)
-    mainroot.configure(bg="aqua")
 
 
     def click9():
@@ -290,10 +289,9 @@ def start():
 
         # Привязываем событие клика мышью к функции открытия ссылки
         label.bind("<Button-1>", open_link)
-        btn4 = Button(height=1, width=6, command=back, padx=5, pady=5, text='Main page', bd=10, fg='#fff',
+        btn4 = Button(height=1, width=18, command=back, padx=5, pady=5, text='Главная страница', bd=10, fg='#fff',
                       bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
         btn4.pack()
-
 
     w = 804
     h = 500
@@ -302,14 +300,11 @@ def start():
     x = (ws / 2) - (w / 2)
     y = (hs / 2) - (h / 2)
     mainroot.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    btn = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Admin mode', bd=5, fg='#fff', bg='#cda4de',
-                 underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+    btn = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Admin mode', bd=5, cursor='hand2')
     btn.place(x=10, y=120)
-    btn2 = Button(height=15, width=30, command=click9, padx=5, pady=5, text="Customer mode", bd=5, fg='#fff', bg='#cda4de',
-                  underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+    btn2 = Button(height=15, width=30, command=click9, padx=5, pady=5, text="Customer mode", bd=5, cursor='hand2')
     btn2.place(x=560, y=120)
-    btn3 = Button(height=15, width=30, command=click15, padx=5, pady=5, text='Application submission mode', bd=5, fg='#fff',
-                  bg='#cda4de', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+    btn3 = Button(height=15, width=30, command=click15, padx=5, pady=5, text='Application submission mode', bd=5, cursor='hand2')
     btn3.place(x=285, y=120)
     btn4 = Button(height=5, width=20, command=click10, padx=5, pady=5, text='Exit', bd=10, fg='#fff',
                   bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
