@@ -3,7 +3,8 @@ import telebot
 import json
 import random
 import string
-from view import menu_2
+from view import Hello, Order, Payment, Basket, Edit_the_shopping_cart, Exit
+
 
 
 def editing_employees():
@@ -163,7 +164,7 @@ def See_everyone_who_wants_to_get_a_job():
     with open('user_data.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
-        print(json.dumps(data, indent=4, ensure_ascii=False))   
+        print(json.dumps(data, indent=4, ensure_ascii=False))
 
 def Get_everyone_to_work():
     Pass
@@ -189,231 +190,227 @@ def fire_employees():
 
 def user():
     import tkinter as tk
-from tkinter import messagebox, font, simpledialog
-from collections import Counter
+    from tkinter import messagebox, font, simpledialog
+    from collections import Counter
 
-# создание класса
-class user:
-    # инициализация основного окна приложения
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Home comfort")
-        self.Basket = []
+    # создание класса
+    class user:
+        # инициализация основного окна приложения
+        def __init__(self, master):
+            self.master = master
+            self.master.title("Home comfort")
+            self.Basket = []
 
-        self.label = tk.Label(master, text="Добро пожаловать в кофейню!")
-        self.label.pack()
+            self.label = tk.Label(master, text= Hello)
+            self.label.pack()
 
-        self.button_order = tk.Button(master, text="Заказать", command=self.go_to_order)
-        self.button_order.pack()
+            self.button_order = tk.Button(master, text = Order, command=self.go_to_order)
+            self.button_order.pack()
 
-        self.button_payment = tk.Button(master, text="Оплатить", command=self.payment)
-        self.button_payment.pack()
+            self.button_payment = tk.Button(master, text = Payment, command=self.payment)
+            self.button_payment.pack()
 
-        self.button_cart = tk.Button(master, text="Корзина", command=self.cart)
-        self.button_cart.pack()
+            self.button_cart = tk.Button(master, text = Basket, command=self.cart)
+            self.button_cart.pack()
 
-        self.button_edit_cart = tk.Button(master, text="Редактировать корзину", command=self.edit_cart)
-        self.button_edit_cart.pack()
+            self.button_edit_cart = tk.Button(master, text = Edit_the_shopping_cart, command=self.edit_cart)
+            self.button_edit_cart.pack()
 
-        self.button_exit = tk.Button(master, text="Выход", command=master.quit)
-        self.button_exit.pack()
+            self.button_exit = tk.Button(master, text = Exit, command=master.quit)
+            self.button_exit.pack()
 
-        # Определение размеров экрана
-        screen_width = master.winfo_screenwidth()
-        screen_height = master.winfo_screenheight()
-        # Определение размеров окна
-        window_width = 300
-        window_height = 200
-        # Вычисление координат для расположения окна по центру
-        x = (screen_width // 2) - (window_width // 2)
-        y = (screen_height // 2) - (window_height // 2)
-        # Установка положения окна
-        master.geometry(f"{window_width}x{window_height}+{x}+{y}")
+            # Определение размеров экрана
+            screen_width = master.winfo_screenwidth()
+            screen_height = master.winfo_screenheight()
+            # Определение размеров окна
+            window_width = 300
+            window_height = 200
+            # Вычисление координат для расположения окна по центру
+            x = (screen_width // 2) - (window_width // 2)
+            y = (screen_height // 2) - (window_height // 2)
+            # Установка положения окна
+            master.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-    # общая стоимость товаров в корзине
-    def total_price(self):
-        Total_price = self.Basket.count('Капучино') * 150 + self.Basket.count('Американо') * 120 + \
-                      self.Basket.count('Эспрессо') * 80 + self.Basket.count('Чизкейк') * 100 + \
-                      self.Basket.count('Крем-суп') * 250
-        return Total_price
+        # общая стоимость товаров в корзине
+        def total_price(self):
+            Total_price = self.Basket.count('Капучино') * 150 + self.Basket.count('Американо') * 120 + \
+                          self.Basket.count('Эспрессо') * 80 + self.Basket.count('Чизкейк') * 100 + \
+                          self.Basket.count('Крем-суп') * 250
+            return Total_price
 
-    # добавление выбранного товара в корзину.
-    def go_to_order(self):
-        self.menu_window = tk.Toplevel(self.master)
-        self.menu_window.title("Меню заказа")
+        # добавление выбранного товара в корзину.
+        def go_to_order(self):
+            self.menu_window = tk.Toplevel(self.master)
+            self.menu_window.title("Меню заказа")
 
-        self.menu_label = tk.Label(self.menu_window, text="Выберите товар для заказа:")
-        self.menu_label.pack()
+            self.menu_label = tk.Label(self.menu_window, text="Выберите товар для заказа:")
+            self.menu_label.pack()
 
-        self.list_menu = ["Капучино", "Американо", "Эспрессо", "Чизкейк", "Крем-суп"]
-        self.menu_buttons = []
-        for item in self.list_menu:
-            button = tk.Button(self.menu_window, text=item, command=lambda i=item: self.add_to_basket(i))
-            button.pack()
-            self.menu_buttons.append(button)
+            self.list_menu = ["Капучино", "Американо", "Эспрессо", "Чизкейк", "Крем-суп"]
+            self.menu_buttons = []
+            for item in self.list_menu:
+                button = tk.Button(self.menu_window, text=item, command=lambda i=item: self.add_to_basket(i))
+                button.pack()
+                self.menu_buttons.append(button)
 
-        self.close_button = tk.Button(self.menu_window, text="Закрыть", command=self.menu_window.destroy)
-        self.close_button.pack()
+            self.close_button = tk.Button(self.menu_window, text="Закрыть", command=self.menu_window.destroy)
+            self.close_button.pack()
 
-    def add_to_basket(self, item):
-        self.Basket.append(item)
-        root1 = tk.Tk()
-        root1.title("Сообщение")
-        root1.geometry("200x100")
-        label_font = font.Font(family="Arial", size=10, weight="bold")
-        label_text = tk.Label(root1, text="Добавлено в корзину", font=label_font)
-        label_text.place(relx=0.5, rely=0.5, anchor="center")
-        def close_window():
-            root1.destroy()
-        root1.after(500, close_window)
-        root.mainloop()
+        def add_to_basket(self, item):
+            self.Basket.append(item)
+            root1 = tk.Tk()
+            root1.title("Сообщение")
+            root1.geometry("200x100")
+            label_font = font.Font(family="Arial", size=10, weight="bold")
+            label_text = tk.Label(root1, text="Добавлено в корзину", font=label_font)
+            label_text.place(relx=0.5, rely=0.5, anchor="center")
 
-    def edit_cart(self):
-        edit_window = tk.Toplevel(self.master)
-        edit_window.title("Редактировать корзину")
+            def close_window():
+                root1.destroy()
 
-        self.edit_label = tk.Label(edit_window, text="Выберите товар для редактирования:")
-        self.edit_label.pack()
+            root1.after(500, close_window)
+            root.mainloop()
 
-        self.edit_buttons = []
-        for item in self.Basket:
-            button = tk.Button(edit_window, text=f"{item} ({self.Basket.count(item)})",
-                               command=lambda i=item: self.change_quantity(i, edit_window))
-            button.pack()
-            self.edit_buttons.append(button)
+        def edit_cart(self):
+            edit_window = tk.Toplevel(self.master)
+            edit_window.title("Редактировать корзину")
 
-        self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
-        self.close_button.pack()
+            self.edit_label = tk.Label(edit_window, text="Выберите товар для редактирования:")
+            self.edit_label.pack()
 
-    def add_item(self, item, change_window):
-        self.Basket.append(item)
-        current_quantity = self.Basket.count(item)
-        self.change_label.config(text=f"Текущее количество: {current_quantity}")
+            self.edit_buttons = []
+            for item in self.Basket:
+                button = tk.Button(edit_window, text=f"{item} ({self.Basket.count(item)})",
+                                   command=lambda i=item: self.change_quantity(i, edit_window))
+                button.pack()
+                self.edit_buttons.append(button)
 
-    def remove_item(self, item, change_window):
-        if item in self.Basket:
-            self.Basket.remove(item)
-        current_quantity = self.Basket.count(item)
-        self.change_label.config(text=f"Текущее количество: {current_quantity}")
+            self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
+            self.close_button.pack()
 
-    def refresh_edit_window(self):
-        for button in self.edit_buttons:
-            button.destroy()
+        def add_item(self, item, change_window):
+            self.Basket.append(item)
+            current_quantity = self.Basket.count(item)
+            self.change_label.config(text=f"Текущее количество: {current_quantity}")
 
-        for item in self.Basket:
-            button = tk.Button(self.edit_window, text=f"{item} ({self.Basket.count(item)})",
-                               command=lambda i=item: self.change_quantity(i, self.edit_window))
-            button.pack()
-            self.edit_buttons.append(button)
+        def remove_item(self, item, change_window):
+            if item in self.Basket:
+                self.Basket.remove(item)
+            current_quantity = self.Basket.count(item)
+            self.change_label.config(text=f"Текущее количество: {current_quantity}")
 
-    # оплата
-    def payment(self):
+        def refresh_edit_window(self):
+            for button in self.edit_buttons:
+                button.destroy()
 
-        total_price = self.total_price()
+            for item in self.Basket:
+                button = tk.Button(self.edit_window, text=f"{item} ({self.Basket.count(item)})",
+                                   command=lambda i=item: self.change_quantity(i, self.edit_window))
+                button.pack()
+                self.edit_buttons.append(button)
 
-        def process_card_payment():
-            messagebox.showinfo('Оплата', "Оплата по карте")
-            messagebox.showinfo('Оплата', "Спасибо за покупку!")
+        # оплата
+        def payment(self):
 
-        def process_cash_payment():
-            cash_payment = simpledialog.askinteger("Оплата наличными",
+            total_price = self.total_price()
+
+            def process_card_payment():
+                messagebox.showinfo('Оплата', "Оплата по карте")
+                messagebox.showinfo('Оплата', "Спасибо за покупку!")
+
+            def process_cash_payment():
+                cash_payment = simpledialog.askinteger("Оплата наличными",
                                                        f"Общая стоимость: {total_price}\nВведите сумму наличных:")
-            if cash_payment is not None:
-                if cash_payment > total_price:
-                    change = cash_payment - total_price
-                    messagebox.showinfo('Оплата', f"Ваша сдача: {change}")
-                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
-                elif cash_payment == total_price:
-                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
+                if cash_payment is not None:
+                    if cash_payment > total_price:
+                        change = cash_payment - total_price
+                        messagebox.showinfo('Оплата', f"Ваша сдача: {change}")
+                        messagebox.showinfo('Оплата', "Спасибо за покупку!")
+                    elif cash_payment == total_price:
+                        messagebox.showinfo('Оплата', "Спасибо за покупку!")
+                    else:
+                        messagebox.showinfo('Оплата', "Вы не дали достаточно денег для оплаты заказа!")
+
+            payment_window = tk.Toplevel(root)
+            payment_window.title("Оплата")
+            payment_window.geometry("300x200")
+            payment_method_label = tk.Label(payment_window, text=f"Общая сумма к оплате: {total_price} руб.")
+            payment_method_label.pack(pady=10)
+            payment_method_label = tk.Label(payment_window, text="Выберите способ оплаты:")
+            payment_method_label.pack(pady=10)
+            card_button = tk.Button(payment_window, text="Оплата картой", command=process_card_payment)
+            card_button.pack(pady=5)
+            cash_button = tk.Button(payment_window, text="Оплата наличными", command=process_cash_payment)
+            cash_button.pack(pady=5)
+
+        # корзина
+        def cart(self):
+            cart_window = tk.Toplevel(self.master)
+            cart_window.title("Корзина")
+
+            self.cart_label = tk.Label(cart_window, text="Содержимое корзины:")
+            self.cart_label.pack()
+
+            # Создаем словарь для хранения товаров и их количества
+            cart_items = {}
+            for item in self.Basket:
+                if item in cart_items:
+                    cart_items[item] += 1
                 else:
-                    messagebox.showinfo('Оплата', "Вы не дали достаточно денег для оплаты заказа!")
+                    cart_items[item] = 1
 
-        payment_window = tk.Toplevel(root)
-        payment_window.title("Оплата")
-        payment_window.geometry("300x200")
-        payment_method_label = tk.Label(payment_window, text=f"Общая сумма к оплате: {total_price} руб.")
-        payment_method_label.pack(pady=10)
-        payment_method_label = tk.Label(payment_window, text="Выберите способ оплаты:")
-        payment_method_label.pack(pady=10)
-        card_button = tk.Button(payment_window, text="Оплата картой", command=process_card_payment)
-        card_button.pack(pady=5)
-        cash_button = tk.Button(payment_window, text="Оплата наличными", command=process_cash_payment)
-        cash_button.pack(pady=5)
+            # Выводим название товара и его количество
+            for item, quantity in cart_items.items():
+                label = tk.Label(cart_window, text=f"{item}: {quantity}")
+                label.pack()
 
+            self.total_price_label = tk.Label(cart_window, text=f"Общая сумма: {self.total_price()} руб.")
+            self.total_price_label.pack()
 
+        # редактирование корзины
+        def edit_cart(self):
+            edit_window = tk.Toplevel(self.master)
+            edit_window.title("Редактировать корзину")
 
+            # Создаем словарь для хранения товаров и их количества
+            cart_items = {}
+            for item in self.Basket:
+                if item in cart_items:
+                    cart_items[item] += 1
+                else:
+                    cart_items[item] = 1
 
-    # корзина
-    def cart(self):
-        cart_window = tk.Toplevel(self.master)
-        cart_window.title("Корзина")
+            # Создаем кнопки для редактирования количества товаров
+            for item, quantity in cart_items.items():
+                button = tk.Button(edit_window, text=f"{item} ({quantity})",
+                                   command=lambda i=item: self.change_quantity(i, edit_window))
+                button.pack()
 
-        self.cart_label = tk.Label(cart_window, text="Содержимое корзины:")
-        self.cart_label.pack()
+            self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
+            self.close_button.pack()
 
-        # Создаем словарь для хранения товаров и их количества
-        cart_items = {}
-        for item in self.Basket:
-            if item in cart_items:
-                cart_items[item] += 1
-            else:
-                cart_items[item] = 1
+        def change_quantity(self, item, edit_window):
+            change_window = tk.Toplevel(edit_window)
+            change_window.title(f"Изменить количество {item}")
 
-        # Выводим название товара и его количество
-        for item, quantity in cart_items.items():
-            label = tk.Label(cart_window, text=f"{item}: {quantity}")
-            label.pack()
+            # Исправление: использование метода count для подсчета количества элементов в списке
+            current_quantity = self.Basket.count(item)
+            self.change_label = tk.Label(change_window, text=f"Текущее количество: {current_quantity}")
+            self.change_label.pack()
 
-        self.total_price_label = tk.Label(cart_window, text=f"Общая сумма: {self.total_price()} руб.")
-        self.total_price_label.pack()
+            # Исправление: использование правильного метода для добавления/удаления элементов в список
+            self.add_button = tk.Button(change_window, text="Увеличить",
+                                        command=lambda: self.add_item(item, change_window))
+            self.add_button.pack()
 
+            self.remove_button = tk.Button(change_window, text="Уменьшить",
+                                           command=lambda: self.remove_item(item, change_window))
+            self.remove_button.pack()
 
-
-    # редактирование корзины
-    def edit_cart(self):
-        edit_window = tk.Toplevel(self.master)
-        edit_window.title("Редактировать корзину")
-
-        # Создаем словарь для хранения товаров и их количества
-        cart_items = {}
-        for item in self.Basket:
-            if item in cart_items:
-                cart_items[item] += 1
-            else:
-                cart_items[item] = 1
-
-        # Создаем кнопки для редактирования количества товаров
-        for item, quantity in cart_items.items():
-            button = tk.Button(edit_window, text=f"{item} ({quantity})",
-                               command=lambda i=item: self.change_quantity(i, edit_window))
-            button.pack()
-
-        self.close_button = tk.Button(edit_window, text="Закрыть", command=edit_window.destroy)
-        self.close_button.pack()
-
-    def change_quantity(self, item, edit_window):
-        change_window = tk.Toplevel(edit_window)
-        change_window.title(f"Изменить количество {item}")
-
-        # Исправление: использование метода count для подсчета количества элементов в списке
-        current_quantity = self.Basket.count(item)
-        self.change_label = tk.Label(change_window, text=f"Текущее количество: {current_quantity}")
-        self.change_label.pack()
-
-        # Исправление: использование правильного метода для добавления/удаления элементов в список
-        self.add_button = tk.Button(change_window, text="Увеличить",
-                                    command=lambda: self.add_item(item, change_window))
-        self.add_button.pack()
-
-        self.remove_button = tk.Button(change_window, text="Уменьшить",
-                                       command=lambda: self.remove_item(item, change_window))
-        self.remove_button.pack()
-
-
-# Создание основного окна
-root = tk.Tk()
-app = user(root)
-root.mainloop()
+    # Создание основного окна
+    root = tk.Tk()
+    app = user(root)
+    root.mainloop()
 
 
 
