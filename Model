@@ -3,6 +3,9 @@ import telebot
 import json
 import random
 import string
+import tkinter as tk
+from tkinter import messagebox, font, simpledialog
+from collections import Counter
 from view import Hello, Order, Payment, Basket, Edit_the_shopping_cart, Exit
 
 
@@ -160,11 +163,58 @@ def removing_employees(employee_id):
     return removed_employee
 
 
-def See_everyone_who_wants_to_get_a_job():
+def See_everyone_who_wants_to_get_a_job(root4):
+    job_seeker_window = tk.Toplevel(root4)
+    job_seeker_window.title("Соискатели работы")
+
     with open('user_data.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
-        print(json.dumps(data, indent=4, ensure_ascii=False))
+    job_seeker_list = tk.Listbox(job_seeker_window, width=100)
+    job_seeker_list.pack(side=tk.LEFT, fill=tk.BOTH)
+
+    for user in data:
+        info = user['info'].split('\n')
+        name = info[0].strip()
+        surname = info[1].strip()
+        patronymic = info[2].strip()
+        age = info[3].strip()
+        desired_position = info[4].strip()
+        experience = info[5].strip()
+        code = user['code']
+        job_seeker_list.insert(tk.END, f"{name} {surname} {patronymic} ({age}) - {desired_position}, опыт: {experience} ({code})")
+
+    details_frame = tk.Frame(job_seeker_window)
+    details_frame.pack(side=tk.LEFT, fill=tk.BOTH)
+
+    details_text = tk.Text(details_frame, width=50, height=20)
+    details_text.pack(fill=tk.BOTH)
+
+    def show_job_seeker_details(event):
+        selection = job_seeker_list.curselection()
+        if selection:
+            index = selection[0]
+            user_data = data[index]
+            info = user_data['info'].split('\n')
+            details_text.delete(1.0, tk.END)
+            details_text.insert(tk.END, f"Имя: {info[0].strip()}\n")
+            details_text.insert(tk.END, f"Фамилия: {info[1].strip()}\n")
+            details_text.insert(tk.END, f"Отчество: {info[2].strip()}\n")
+            details_text.insert(tk.END, f"Возраст: {info[3].strip()}\n")
+            details_text.insert(tk.END, f"Желаемая должность: {info[4].strip()}\n")
+            details_text.insert(tk.END, f"Опыт работы: {info[5].strip()}\n")
+            details_text.insert(tk.END, f"Код: {user_data['code']}\n")
+
+    job_seeker_list.bind('<<ListboxSelect>>', show_job_seeker_details)
+
+def create_main_window():
+    root4 = tk.Tk()
+    root4.title("Приложение")
+
+    button = tk.Button(root4, text="Показать соискателей работы", command=lambda: See_everyone_who_wants_to_get_a_job(root4))
+    button.pack()
+
+    root4.mainloop()
 
 def Get_everyone_to_work():
     Pass
@@ -189,9 +239,6 @@ def fire_employees():
 
 
 def user():
-    import tkinter as tk
-    from tkinter import messagebox, font, simpledialog
-    from collections import Counter
 
     # создание класса
     class user:
@@ -216,7 +263,7 @@ def user():
             self.button_edit_cart = tk.Button(master, text = Edit_the_shopping_cart, command=self.edit_cart)
             self.button_edit_cart.pack()
 
-            self.button_exit = tk.Button(master, text = Exit, command=master.quit)
+            self.button_exit = tk.Button(master, text= Exit, command=master.quit)
             self.button_exit.pack()
 
             # Определение размеров экрана
