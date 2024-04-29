@@ -4,6 +4,7 @@ from tkinter import messagebox
 import hashlib
 from tkinter import ttk
 import webbrowser
+import json
 
 def start():
     def click5():
@@ -183,6 +184,63 @@ def start():
                 file.seek(0)
             messagebox.showinfo('Банкротство', 'Вы обонкрочены')
             exit()
+
+        def get_all_employees():
+            root7.destroy()
+            try:
+                with open('The_database.json', 'r', encoding='utf-8') as f:
+                    employees = json.load(f)
+            except FileNotFoundError:
+                employees = []
+
+            employee_window = Tk()
+            employee_window.title("Список сотрудников")
+            employee_window.resizable(False,False)
+
+            employee_list = tk.Listbox(employee_window, width=50)
+            employee_list.pack(side=tk.LEFT, fill=tk.BOTH)
+
+            for employee in employees:
+                try:
+                    name = f"{employee['Имя']} {employee['Фамилия']} {employee['Отчество']}"
+                    age = employee['Возраст']
+                    position = employee['желаемое положение']
+                    experience = employee['опыт']
+                    employee_id = employee['ID']
+                    employee_list.insert(tk.END, f"{name} ({age}) - {position}, опыт: {experience}, ID: {employee_id}")
+                except KeyError:
+                    employee_list.insert(tk.END, f"Отсутствующий ключ в данных о сотруднике: {employee}")
+
+            def show_employee_details(event):
+                selection = employee_list.curselection()
+                if selection:
+                    index = selection[0]
+                    employee_data = employees[index]
+                    details_text.delete(1.0, tk.END)
+                    details_text.insert(tk.END, f"Имя: {employee_data.get('Имя', 'Неизвестно')}\n")
+                    details_text.insert(tk.END, f"Фамилия: {employee_data.get('Фамилия', 'Неизвестно')}\n")
+                    details_text.insert(tk.END, f"Отчество: {employee_data.get('Отчество', 'Неизвестно')}\n")
+                    details_text.insert(tk.END, f"Возраст: {employee_data.get('Возраст', 'Неизвестно')}\n")
+                    details_text.insert(tk.END,
+                                        f"Желаемое положение: {employee_data.get('желаемое положение', 'Неизвестно')}\n")
+                    details_text.insert(tk.END, f"Опыт: {employee_data.get('опыт', 'Неизвестно')}\n")
+                    details_text.insert(tk.END, f"ID: {employee_data.get('ID', 'Неизвестно')}\n")
+
+            employee_list.bind('<<ListboxSelect>>', show_employee_details)
+
+            details_frame = tk.Frame(employee_window)
+            details_frame.pack(side=tk.LEFT, fill=tk.BOTH)
+
+            details_text = tk.Text(details_frame, width=40, height=20)
+            details_text.pack(fill=tk.BOTH)
+
+            def exit():
+                employee_window.destroy()
+                root17()
+
+            btn4 = Button(height=5, width=17, command=exit, padx=5, pady=5, text='Предыдущая страница', bd=5, fg='#fff',
+                          bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
+            btn4.place(x=460, y=200)
         def click11():
             root7.destroy()
 
@@ -191,7 +249,7 @@ def start():
         root7.geometry('%dx%d+%d+%d' % (w, s, x - 300, y - 150))
         btn = Button(height=10, width=25, command=click3, padx=5, pady=5, text='Удаление пользователя', bd=5, cursor='hand2')
         btn.place(x=285, y=270)
-        btn2 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Посмотреть всех\n сотрудников', bd=5, cursor='hand2')
+        btn2 = Button(height=10, width=25, command=get_all_employees, padx=5, pady=5, text='Посмотреть всех\n сотрудников', bd=5, cursor='hand2')
         btn2.place(x=285, y=30)
         btn3 = Button(height=10, width=25, command=click13, padx=5, pady=5, text='Редактирование сотрудников', bd=5, cursor='hand2')
         btn3.place(x=560, y=30)
@@ -203,7 +261,7 @@ def start():
         btn8.place(x=285, y=510)
         btn7 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Устроить на работу\n всех желающих', bd=5, cursor='hand2')
         btn7.place(x=560, y=510)
-        btn9 = Button(height=10, width=25, command=click12, padx=5, pady=5, text='Посмотреть всех желающих\n устроиться на работу', bd=5, cursor='hand2')
+        btn9 = Button(height=10, width=25, command=click8, padx=5, pady=5, text='Посмотреть всех желающих\n устроиться на работу', bd=5, cursor='hand2')
         btn9.place(x=835, y=510)
         def back():
             root7.destroy()
@@ -300,12 +358,12 @@ def start():
     x = (ws / 2) - (w / 2)
     y = (hs / 2) - (h / 2)
     mainroot.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    btn = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Admin mode', bd=5, cursor='hand2')
+    btn = Button(height=15, width=30, command=click8, padx=5, pady=5, text='Режим админа', bd=5, cursor='hand2')
     btn.place(x=10, y=120)
-    btn2 = Button(height=15, width=30, command=click9, padx=5, pady=5, text="Customer mode", bd=5, cursor='hand2')
-    btn2.place(x=560, y=120)
-    btn3 = Button(height=15, width=30, command=click15, padx=5, pady=5, text='Application submission mode', bd=5, cursor='hand2')
+    btn3 = Button(height=15, width=30, command=click15, padx=5, pady=5, text='Режим подачи заявки', bd=5, cursor='hand2')
     btn3.place(x=285, y=120)
+    btn2 = Button(height=15, width=30, command=click9, padx=5, pady=5, text="Клиентский режим", bd=5, cursor='hand2')
+    btn2.place(x=560, y=120)
     btn4 = Button(height=5, width=20, command=click10, padx=5, pady=5, text='Exit', bd=10, fg='#fff',
                   bg='#000', underline=0, activebackground='#fff', activeforeground='#fff', cursor='hand2')
     btn4.place(x=320, y=390)
