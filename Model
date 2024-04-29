@@ -185,28 +185,68 @@ def get_all_employees():
     root.mainloop()
 
 
-def removing_employees(employee_id):
-    # Считайте данные из файла
-    with open('the_database.json', 'r') as file:
-        data = json.load(file)
+def removing_employees():
+    # Создание главного окна
+    root7 = tk.Tk()
+    root7.title("Employee Management")
+    root7.geometry("400x200")
 
-    # Найдите и удалите сотрудника с указанным идентификатором
-    removed_employee = None
-    for employee in data:
-        if employee['ID'] == str(employee_id):
-            removed_employee = employee
-            data.remove(employee)
-            break
+    # Создание поля ввода для ID
+    id_label = tk.Label(root7, text="ID сотрудника")
+    id_label.pack()
+    id_entry = tk.Entry(root7)
+    id_entry.pack()
 
-    # Запишите обновленные данные обратно в файл
-    with open('the_database.json', 'w') as file:
-        json.dump(data, file)
-    return removed_employee
+    # Функция для удаления сотрудника
+    def remove_employee():
+        employee_id = id_entry.get()
+        removed_employee = removing_employees(employee_id)
+
+        if removed_employee:
+            display_success(f"Сотрудник с ID {removed_employee['ID']} удален.")
+        else:
+            display_error("Неверный ID сотрудника.")
+
+        id_entry.delete(0, tk.END)  # Очистка поля ввода после удаления
+
+    def removing_employees(employee_id):
+        # Считайте данные из файла
+        with open('the_database.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+        # Найдите и удалите сотрудника с указанным идентификатором
+        removed_employee = None
+        for employee in data:
+            if employee['ID'] == employee_id:
+                removed_employee = employee
+                data.remove(employee)
+                break
+
+        # Запишите обновленные данные обратно в файл
+        with open('the_database.json', 'w', encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False, indent=2)
+
+        return removed_employee
+
+    def display_success(message):
+        success_label = tk.Label(root7, text=message, fg="green")
+        success_label.pack()
+
+    def display_error(message):
+        error_label = tk.Label(root7, text=message, fg="red")
+        error_label.pack()
+
+    # Создание кнопки "Удалить"
+    remove_button = tk.Button(root7, text="Удалить", command=remove_employee)
+    remove_button.pack()
+
+    # Запуск главного цикла событий
+    root7.mainloop()
 
 
 def See_everyone_who_wants_to_get_a_job(root4):
     job_seeker_window = tk.Toplevel(root4)
-    job_seeker_window.title("Соискатели работы")
+    job_seeker_window.title("Желатели работать")
 
     with open('user_data.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
