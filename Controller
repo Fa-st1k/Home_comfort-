@@ -1,4 +1,4 @@
-from model import editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,See_everyone_who_wants_to_get_a_job,Get_everyone_to_work
+from model import editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
 from view import display_menu,  display_success, display_error
 import json
 
@@ -26,7 +26,7 @@ def main():
 
             display_success("The employee was successfully accepted.")
         elif choice == "2":
-            get_all_employees()
+            get_all_employees(root3)
         elif choice == "3":
             editing_employees()
         elif choice == "4":
@@ -37,7 +37,7 @@ def main():
             else:
                 display_error("Invalid employee ID.")
         elif choice == "5":
-            See_everyone_who_wants_to_get_a_job()
+            create_main_window()
         elif choice == "6":
             Get_everyone_to_work()
         elif choice == "7":
@@ -54,7 +54,7 @@ Log_in_to_the_system = input("\n Welcome to the cafe 'Home comfort'!"
                              "\n Enter the number of the desired action:")
 if Log_in_to_the_system == "1":
     global Password
-    Password = "2444666668888888"
+    Password = "2"
     num = input("Enter the password:")
     if Password == num:
         main()
