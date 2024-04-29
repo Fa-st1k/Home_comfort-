@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import simpledialog
+from tkinter import font
 # создание класса
 class CoffeeShopApp:
     # инициализация основного окна приложения
@@ -65,6 +67,16 @@ class CoffeeShopApp:
 
     def add_to_basket(self, item):
         self.Basket.append(item)
+        root1 = tk.Tk()
+        root1.title("Сообщение")
+        root1.geometry("200x100")
+        label_font = font.Font(family="Arial", size=10, weight="bold")
+        label_text = tk.Label(root1, text="Добавлено в корзину", font=label_font)
+        label_text.place(relx=0.5, rely=0.5, anchor="center")
+        def close_window():
+            root1.destroy()
+        root1.after(500, close_window)
+        root.mainloop()
 
     def edit_cart(self):
         edit_window = tk.Toplevel(self.master)
@@ -115,45 +127,40 @@ class CoffeeShopApp:
 
     # оплата
     def payment(self):
-        payment_window = tk.Toplevel(self.master)
+
+        total_price = self.total_price()
+
+        def process_card_payment():
+            messagebox.showinfo('Оплата', "Оплата по карте")
+            messagebox.showinfo('Оплата', "Спасибо за покупку!")
+
+        def process_cash_payment():
+            cash_payment = simpledialog.askinteger("Оплата наличными",
+                                                       f"Общая стоимость: {total_price}\nВведите сумму наличных:")
+            if cash_payment is not None:
+                if cash_payment > total_price:
+                    change = cash_payment - total_price
+                    messagebox.showinfo('Оплата', f"Ваша сдача: {change}")
+                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
+                elif cash_payment == total_price:
+                    messagebox.showinfo('Оплата', "Спасибо за покупку!")
+                else:
+                    messagebox.showinfo('Оплата', "Вы не дали достаточно денег для оплаты заказа!")
+
+        payment_window = tk.Toplevel(root)
         payment_window.title("Оплата")
+        payment_window.geometry("300x200")
+        payment_method_label = tk.Label(payment_window, text=f"Общая сумма к оплате: {total_price} руб.")
+        payment_method_label.pack(pady=10)
+        payment_method_label = tk.Label(payment_window, text="Выберите способ оплаты:")
+        payment_method_label.pack(pady=10)
+        card_button = tk.Button(payment_window, text="Оплата картой", command=process_card_payment)
+        card_button.pack(pady=5)
+        cash_button = tk.Button(payment_window, text="Оплата наличными", command=process_cash_payment)
+        cash_button.pack(pady=5)
 
-        total_price = self.total_price()
-        self.payment_label = tk.Label(payment_window, text=f"Общая сумма к оплате: {total_price} руб.")
-        self.payment_label.pack()
 
-        self.payment_method_label = tk.Label(payment_window, text="Выберите метод оплаты:")
-        self.payment_method_label.pack()
 
-        self.payment_method_var = tk.StringVar()
-        self.payment_method_var.set("1")
-
-        self.payment_method_radio1 = tk.Radiobutton(payment_window, text="По карте", variable=self.payment_method_var,
-                                                    value="1")
-        self.payment_method_radio1.pack()
-
-        self.payment_method_radio2 = tk.Radiobutton(payment_window, text="Наличными", variable=self.payment_method_var,
-                                                    value="2")
-        self.payment_method_radio2.pack()
-
-        self.payment_button = tk.Button(payment_window, text="Оплатить", command=self.make_payment)
-        self.payment_button.pack()
-
-    # оплата
-    def make_payment(self):
-        total_price = self.total_price()
-        payment_method = self.payment_method_var.get()
-
-        if payment_method == "1":
-            messagebox.showinfo('Оплата',"Оплата по карте")
-        elif payment_method == "2":
-            Bill_for_payment = int(input("Введите сумму платежа наличными: "))
-            if Bill_for_payment > total_price:
-                messagebox.showinfo('Оплата',"Ваша сдача:", Bill_for_payment - total_price)
-            elif Bill_for_payment == total_price:
-                messagebox.showinfo('Оплата',"Спасибо за покупку!")
-            else:
-                messagebox.showinfo('Оплата',"Вы не дали достаточно денег для оплаты заказа!")
 
     # корзина
     def cart(self):
