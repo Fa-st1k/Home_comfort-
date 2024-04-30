@@ -6,9 +6,47 @@ import string
 import tkinter as tk
 from tkinter import messagebox, font, simpledialog
 from collections import Counter
-from view import Hello, Order, Payment, Basket, Edit_the_shopping_cart, Exit
 
 
+def add_employee():
+    root6 = tk.Tk()
+    root6.title("Employee Registration")
+    root6.geometry("400x400")
+
+    labels = ["Имя", "Фамилия", "Отчество", "Возраст", "желаемое положение", "опыт", "ID"]
+    entries = []
+    for label_text in labels:
+        label = tk.Label(root6, text=label_text)
+        label.pack()
+        entry = tk.Entry(root6)
+        entry.pack()
+        entries.append(entry)
+
+    employee_list = []
+
+    def submit_callback():
+        The_database = {}
+        for i, entry in enumerate(entries):
+            value = entry.get()
+            if i == 3:
+                value = int(value)
+            The_database[labels[i]] = value
+
+        employee_list.append(The_database)
+
+        with open('The_database.json', 'w', encoding='utf-8') as f:
+            json.dump(employee_list, f, ensure_ascii=False, indent=2)
+
+        success_label = tk.Label(root6, text="Сотрудник успешно принят.")
+        success_label.pack()
+
+        for entry in entries:
+            entry.delete(0, tk.END)
+
+    submit_button = tk.Button(root6, text="Отправить", command=submit_callback)
+    submit_button.pack()
+
+    root6.mainloop()
 
 def editing_employees():
     with open('the_database.json', 'r') as f:
@@ -343,24 +381,23 @@ def user():
             self.master.title("Home comfort")
             self.Basket = []
 
-            self.label = tk.Label(master, text= Hello)
+            self.label = tk.Label(master, text= "Добро пожаловать в кофейню!")
             self.label.pack()
 
-            self.button_order = tk.Button(master, text = Order, command=self.go_to_order)
+            self.button_order = tk.Button(master, text = "Заказать", command=self.go_to_order)
             self.button_order.pack()
 
-            self.button_payment = tk.Button(master, text = Payment, command=self.payment)
+            self.button_payment = tk.Button(master, text = "Оплатить", command=self.payment)
             self.button_payment.pack()
 
-            self.button_cart = tk.Button(master, text = Basket, command=self.cart)
+            self.button_cart = tk.Button(master, text = "Корзина", command=self.cart)
             self.button_cart.pack()
 
-            self.button_edit_cart = tk.Button(master, text = Edit_the_shopping_cart, command=self.edit_cart)
+            self.button_edit_cart = tk.Button(master, text = "Редактировать корзину", command=self.edit_cart)
             self.button_edit_cart.pack()
 
-            self.button_exit = tk.Button(master, text= Exit, command=master.quit)
+            self.button_exit = tk.Button(master, text= "Выход", command=master.quit)
             self.button_exit.pack()
-
             # Определение размеров экрана
             screen_width = master.winfo_screenwidth()
             screen_height = master.winfo_screenheight()
