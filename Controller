@@ -1,96 +1,144 @@
-from model import editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
+from model import add_employee, editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
 from view import display_menu,  display_success, display_error
 import json
 import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
 
 def main():
     employee_list = []
 
-    while True:
+    def display_menu1():
         display_menu()
-        choice = input("\nSelect an action (1-7): ")
+        menu_label.configure(text=menu_text, font=("Arial", 14))
 
-        if choice == "1":
-            root6 = tk.Tk()
-            root6.title("Employee Registration")
-            root6.geometry("400x400")
+    def main():
+        global root
+        root = tk.Tk()
+        root.title("Управление сотрудниками")
+        root.state('zoomed')  # Развернуть окно на весь экран
 
-            labels = ["Имя", "Фамилия", "Отчество", "Возраст", "желаемое положение", "опыт", "ID"]
-            entries = []
-            for label_text in labels:
-                label = tk.Label(root6, text=label_text)
-                label.pack()
-                entry = tk.Entry(root6)
-                entry.pack()
-                entries.append(entry)
+        style = ttk.Style()
+        style.theme_use("clam")  # Выбор темы для улучшенного внешнего вида
 
-            employee_list = []
+        # Создание нового стиля для кнопок
+        style.map("AccentButton",
+                  foreground=[('active', 'white'), ('!active', 'black')],
+                  background=[('active', 'green'), ('!active', 'light green')])
 
-            def submit_callback():
-                The_database = {}
-                for i, entry in enumerate(entries):
-                    value = entry.get()
-                    if i == 3:
-                        value = int(value)
-                    the_database[labels[i]] = value
+        global menu_label
+        menu_label = ttk.Label(root, text="Выберите действие:", font=("Arial", 16))
+        menu_label.pack(pady=20)
 
-                employee_list.append(The_database)
+        button_frame = ttk.Frame(root)
+        button_frame.pack(pady=20)
 
-                with open('The_database.json', 'w', encoding='utf-8') as f:
-                    json.dump(employee_list, f, ensure_ascii=False, indent=2)
+        add_employee_button = ttk.Button(button_frame, text="Добавить сотрудника", command=add_employee,
+                                         style="AccentButton.TButton")
+        add_employee_button.grid(row=0, column=0, padx=10, pady=10)
 
-                success_label = tk.Label(root6, text="Сотрудник успешно принят.")
-                success_label.pack()
+        view_employees_button = ttk.Button(button_frame, text="Просмотреть сотрудников", command=get_all_employees,
+                                           style="AccentButton.TButton")
+        view_employees_button.grid(row=0, column=1, padx=10, pady=10)
 
-                for entry in entries:
-                    entry.delete(0, tk.END)
+        edit_employees_button = ttk.Button(button_frame, text="Редактирование сотрудников", command=editing_employees,
+                                           style="AccentButton.TButton")
+        edit_employees_button.grid(row=0, column=2, padx=10, pady=10)
 
-            submit_button = tk.Button(root6, text="Отправить", command=submit_callback)
-            submit_button.pack()
+        remove_employee_button = ttk.Button(button_frame, text="Увольнение сотрудника", command=removing_employees,
+                                            style="AccentButton.TButton")
+        remove_employee_button.grid(row=1, column=0, padx=10, pady=10)
 
-            root6.mainloop()
-        elif choice == "2":
-            get_all_employees()
-        elif choice == "3":
-            editing_employees()
-        elif choice == "4":
-            index = int(input("Enter the ID of the employee you want to remove: "))
-            removed_employee = removing_employees(index)
-            if removed_employee:
-                display_success(f"Name {removed_employee['Name']}, Surname {removed_employee['Surname']}, Middle_name {removed_employee['Middle_name']}, age {removed_employee['age']}, desired position {removed_employee['desired position']}, experience {removed_employee['experience']} deleted.")
-            else:
-                display_error("Invalid employee ID.")
-        elif choice == "5":
-            create_main_window()
-        elif choice == "6":
-            Get_everyone_to_work()
-        elif choice == "7":
-            fire_employees()
-            print("Exiting the program.")
-            break
-        else:
-            display_error("Wrong choice. Please choose from this")
+        view_applicants_button = ttk.Button(button_frame, text="Посмотреть желающих устроиться",
+                                            command=create_main_window, style="AccentButton.TButton")
+        view_applicants_button.grid(row=1, column=1, padx=10, pady=10)
 
-Log_in_to_the_system = input("\n Welcome to the cafe 'Home comfort'!"
-                             "\n 1 - Admin Mode"
-                             "\n 2 - Buyer's mode"
-                             "\n 3 - Application submission mode"
-                             "\n Enter the number of the desired action:")
-if Log_in_to_the_system == "1":
-    global Password
-    Password = "2"
-    num = input("Enter the password:")
-    if Password == num:
-        main()
-    else:
-        print("\n You entered the password incorrectly!"
-                "\n You're not an admin, goodbye!")
-elif Log_in_to_the_system == "2":
-    user()
-elif Log_in_to_the_system == "3":
-    print("Перейдите в телеграмм, для этого введите в строке поиска @Projectbot12345bot")
-    Sending_a_job_application()
+        hire_applicants_button = ttk.Button(button_frame, text="Устроить всех желающих", command=get_everyone_to_work,
+                                            style="AccentButton.TButton")
+        hire_applicants_button.grid(row=1, column=2, padx=10, pady=10)
 
+        fire_all_button = ttk.Button(button_frame, text="Уволить всех", command=fire_employees,
+                                     style="AccentButton.TButton")
+        fire_all_button.grid(row=2, column=1, padx=10, pady=10)
 
-if __name__ == "main":
+        root.mainloop()
     main()
+
+
+def main1():
+    messagebox.showinfo("Режим администратора", "Вы вошли в режим администратора.")
+    root8.withdraw()
+    login_window.withdraw()
+
+    def close_window():
+        root8.destroy()
+
+    root8.after(500, close_window)
+    main()
+
+def user1():
+    user()
+
+def job_application():
+    messagebox.showinfo("Режим подачи заявки", "Перейдите в Телеграм, для этого введите в строке поиска @Projectbot12345bot")
+    root8.withdraw()
+
+def login():
+    if password_entry.get() == "2":
+        main1()
+    else:
+        messagebox.showerror("Ошибка", "Вы ввели неправильный пароль!\nВы не являетесь администратором, до свидания!")
+        root8.withdraw()
+
+def back_to_main():
+    login_window.withdraw()
+    root8.deiconify()
+
+root8 = tk.Tk()
+root8.title("Кафе 'Домашний уют'")
+root8.state('zoomed')  # Открыть окно на весь экран
+root8.configure(bg="#f0f5f5")  # Пастельный фоновый цвет
+
+# Стили
+style = ttk.Style()
+style.theme_use("clam")
+style.configure("TLabel", background="#f0f5f5", font=("Arial", 16))
+style.configure("TButton", font=("Arial", 14), padding=10, relief="flat", borderwidth=0)
+style.map("TButton", background=[("active", "#e0e8e8")], foreground=[("active", "#333333")])
+
+welcome_label = ttk.Label(root8, text="Добро пожаловать в кафе 'Домашний уют'!", font=("Arial", 24))
+welcome_label.pack(pady=40)
+
+mode_label = ttk.Label(root8, text="Выберите режим:", font=("Arial", 18))
+mode_label.pack(pady=20)
+
+admin_button = ttk.Button(root8, text="1 - Режим администратора", command=lambda: login_window.deiconify(), width=30)
+admin_button.pack(pady=10)
+
+buyer_button = ttk.Button(root8, text="2 - Режим покупателя", command=user1, width=30)
+buyer_button.pack(pady=10)
+
+job_button = ttk.Button(root8, text="3 - Режим подачи заявки", command=job_application, width=30)
+job_button.pack(pady=10)
+
+login_window = tk.Toplevel(root8)
+login_window.title("Вход для администратора")
+login_window.geometry("+{}+{}".format(root8.winfo_x() + 100, root8.winfo_y() + 100))  # Центрировать окно
+login_window.configure(bg="#f0f5f5")  # Пастельный фоновый цвет
+login_window.withdraw()
+
+password_label = ttk.Label(login_window, text="Введите пароль:", font=("Arial", 14))
+password_label.pack(pady=20)
+
+password_entry = ttk.Entry(login_window, show="*", font=("Arial", 14))
+password_entry.pack(pady=20)
+
+login_button = ttk.Button(login_window, text="Войти", command=login)
+login_button.pack(pady=10)
+
+back_button = ttk.Button(login_window, text="Вернуться", command=back_to_main)
+back_button.pack(pady=10)
+
+root8.mainloop()
+
+
