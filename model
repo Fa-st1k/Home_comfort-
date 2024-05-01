@@ -5,6 +5,7 @@ import random
 import string
 import tkinter as tk
 from tkinter import messagebox, font, simpledialog
+from view import Hello, Order, Payment, Basket, Edit_the_shopping_cart, Exit
 from collections import Counter
 
 
@@ -13,7 +14,7 @@ def add_employee():
     root6.title("Employee Registration")
     root6.geometry("400x400")
 
-    labels = ["Имя", "Фамилия", "Отчество", "Возраст", "желаемое положение", "опыт", "ID"]
+    labels = ["Имя", "Фамилия", "Отчество", "Возраст", "место работы", "опыт", "ID"]
     entries = []
     for label_text in labels:
         label = tk.Label(root6, text=label_text)
@@ -49,120 +50,142 @@ def add_employee():
     root6.mainloop()
 
 def editing_employees():
-    with open('the_database.json', 'r') as f:
+    import tkinter as tk
+    from tkinter import ttk, messagebox, scrolledtext
+    import json
+
+    root = tk.Tk()
+    root.title("Редактор базы данных сотрудников")
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("AccentButton.TButton", background="#4285F4", foreground="white", font=("Arial", 12))
+
+    with open('the_database.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    employee_id = input("Введите идентификатор сотрудника, который вы хотите отредактировать:")
-    if any(d["ID"] == employee_id for d in data):
-        employee = next(d for d in data if d["ID"] == employee_id)
-        print("Сведения о сотруднике:")
-        print(f"ID: {employee_id}")
-        print(f"Имя: {employee['Имя']}")
-        print(f"Фамилия: {employee['Фамилия']}")
-        print(f"Отчество: {employee['Отчество']}")
-        print(f"Возраст: {employee['Возраст']}")
-        print(f"желаемое положение: {employee['желаемое положение']}")
-        print(f"опыт: {employee['опыт']}")
-        while True:
-            choice = input("Что бы вы хотели изменить? (Имя, отчество, возраст, желаемая должность, опыт работы, ID):")
+    edit_window = None
 
-            if choice == "Имя":
-                new_Name = input("Введите в новый Имя: ")
-                employee['Имя'] = new_Name
-                print("Имя успешно обновлено.")
-            elif choice == "Фамилия":
-                new_Surname = int(input("Введите в новый Фамилия: "))
-                employee['Фамилия'] = new_Surname
-                print("Фамилия успешно обновлено.")
-            elif choice == "Отчество":
-                new_Middle_name = input("Введите в новый Отчество: ")
-                employee['Отчество'] = new_Middle_name
-                print("Отчество успешно обновлено.")
-            elif choice == "Возраст":
-                new_age = input("Введите в новый Возраст: ")
-                employee['Возраст'] = new_age
-                print("Возраст успешно обновлено.")
-            elif choice == "желаемое положение":
-                new_desired_position = input("Введите в новый желаемое положение: ")
-                employee['желаемое положение'] = new_desired_position
-                print("Имя успешно обновлено.")
-            elif choice == "опыт":
-                new_experience = input("Введите в новый опыт: ")
-                employee['опыт'] = new_experience
-                print("опыт успешно обновлено.")
-            elif choice == "ID":
-                new_experience = input("Введите в новый ID: ")
-                employee['ID'] = new_experience
-                print("ID успешно обновлено.")
-            elif choice == "выход":
-                break
-            else:
-                print("Неверный выбор. Пожалуйста, попробуйте снова.")
+    def open1():
+        try:
+            with open('the_database.json', 'r', encoding='utf-8') as f:
+                employees = json.load(f)
 
-        with open('the_database.json', 'w') as f:
-            json.dump(data, f)
-            print("Данные успешно сохранены.")
+        except FileNotFoundError:
+            employees = []
 
-        while True:
-            continue_editing = input("Вы хотите отредактировать что-то еще для этого сотрудника? (да/нет): ")
+        employee_window = tk.Toplevel(root)
+        employee_window.title("Список сотрудников")
 
-            if continue_editing == "да":
-                choice = input("Что бы вы хотели отредактировать? (Имя / Фамилия / Отчество / возраст / желаемая должность / опыт работы / ID): ")
+        employee_list = tk.Listbox(employee_window, width=50)
+        employee_list.pack(side=tk.LEFT, fill=tk.BOTH)
 
+        for employee in employees:
+            try:
+                name = f"{employee['Имя']} {employee['Фамилия']} {employee['Отчество']}"
+                age = employee['Возраст']
+                position = employee['место работы']
+                experience = employee['опыт']
+                employee_id = employee['ID']
+                employee_list.insert(tk.END, f"{name} ({age}) - {position}, опыт: {experience}, ID: {employee_id}")
+            except KeyError:
+                employee_list.insert(tk.END, f"Отсутствующий ключ в данных о сотруднике: {employee}")
+
+    def edit_employee(employee_id):
+        global edit_window
+
+        if edit_window is not None:
+            edit_window.destroy()
+
+        if any(d["ID"] == employee_id for d in data):
+            employee = next(d for d in data if d["ID"] == employee_id)
+
+            def update_employee(choice, new_value):
                 if choice == "Имя":
-                    new_Name = input("Введите в новый Имя: ")
-                    employee['Имя'] = new_Name
-                    print("Имя успешно обновлено.")
+                    employee['Имя'] = new_value
                 elif choice == "Фамилия":
-                    new_Surname = int(input("Введите в новый Фамилия: "))
-                    employee['Фамилия'] = new_Surname
-                    print("Фамилия успешно обновлено.")
+                    employee['Фамилия'] = new_value
                 elif choice == "Отчество":
-                    new_Middle_name = input("Введите в новый Отчество: ")
-                    employee['Отчество'] = new_Middle_name
-                    print("Отчество успешно обновлено.")
+                    employee['Отчество'] = new_value
                 elif choice == "Возраст":
-                    new_age = input("Введите в новый Возраст: ")
-                    employee['Возраст'] = new_age
-                    print("Возраст успешно обновлено.")
-                elif choice == "желаемое положение":
-                    new_desired_position = input("Введите в новый желаемое положение: ")
-                    employee['желаемое положение'] = new_desired_position
-                    print("Имя успешно обновлено.")
+                    employee['Возраст'] = new_value
+                elif choice == "место работы":
+                    employee['желаемое положение'] = new_value
                 elif choice == "опыт":
-                    new_experience = input("Введите в новый опыт: ")
-                    employee['опыт'] = new_experience
-                    print("опыт успешно обновлено.")
+                    employee['опыт'] = new_value
                 elif choice == "ID":
-                    new_experience = input("Введите в новый ID: ")
-                    employee['ID'] = new_experience
-                    print("ID успешно обновлено.")
-                elif choice == "выход":
-                    break
-                else:
-                    print("Неверный выбор. Пожалуйста, попробуйте снова.")
+                    employee['ID'] = new_value
 
-                with open('the_database.json', 'w') as f:
-                    json.dump(data, f)
-                    print("Data saved successfully.")
-            elif continue_editing == "нет":
-                break
-            else:
-                print("Неверный выбор. Пожалуйста, попробуйте снова.")
+                with open('the_database.json', 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
 
-        while True:
-            continue_editing_employee = input("Вы хотите отредактировать другого сотрудника? (да/нет): ")
+                messagebox.showinfo("Успешно", f"{choice} успешно обновлено.")
 
-            if continue_editing_employee == "да":
-                editing_employees()
-                break
-            elif continue_editing_employee == "нет":
-                break
-            else:
-                print("Неверный выбор. Пожалуйста, попробуйте снова.")
-    else:
-        print("Неверный идентификатор сотрудника.")
+            edit_window = tk.Toplevel(root)
+            edit_window.title(f"Редактирование сотрудника {employee_id}")
 
+            employee_info = f"ID: {employee_id}\n" \
+                            f"Имя: {employee['Имя']}\n" \
+                            f"Фамилия: {employee['Фамилия']}\n" \
+                            f"Отчество: {employee['Отчество']}\n" \
+                            f"Возраст: {employee['Возраст']}\n" \
+                            f"желаемое положение: {employee['место работы']}\n" \
+                            f"опыт: {employee['опыт']}"
+
+            info_label = ttk.Label(edit_window, text=employee_info, font=("Arial", 12))
+            info_label.pack(pady=10)
+
+            choice_label = ttk.Label(edit_window, text="Что бы вы хотели изменить?", font=("Arial", 12))
+            choice_label.pack(pady=5)
+
+            choice_var = tk.StringVar()
+            choice_dropdown = ttk.Combobox(edit_window, textvariable=choice_var,
+                                           values=["Имя", "Фамилия", "Отчество", "Возраст", "место работы",
+                                                   "опыт", "ID"])
+            choice_dropdown.pack(pady=5)
+
+            new_value_label = ttk.Label(edit_window, text="Введите новое значение:", font=("Arial", 12))
+            new_value_label.pack(pady=5)
+
+            new_value_entry = ttk.Entry(edit_window, font=("Arial", 12))
+            new_value_entry.pack(pady=5)
+
+            def save_changes():
+                choice = choice_var.get()
+                new_value = new_value_entry.get()
+                update_employee(choice, new_value)
+
+            save_button = ttk.Button(edit_window, text="Сохранить изменения", command=save_changes,
+                                     style="AccentButton.TButton")
+            save_button.pack(pady=10)
+
+        else:
+            messagebox.showerror("Ошибка", "Неверный идентификатор сотрудника.")
+
+    main_frame = ttk.Frame(root)
+    main_frame.pack(pady=20)
+
+    edit_employee_window = ttk.Frame(main_frame)
+    edit_employee_window.pack(pady=10)
+
+    employee_id_label = ttk.Label(edit_employee_window, text="Введите идентификатор сотрудника:", font=("Arial", 12))
+    employee_id_label.pack(side="left", padx=5)
+
+    employee_id_entry = ttk.Entry(edit_employee_window, font=("Arial", 12))
+    employee_id_entry.pack(side="left", padx=5)
+
+    def start_editing():
+        employee_id = employee_id_entry.get()
+        edit_employee(employee_id)
+
+    edit_button = ttk.Button(edit_employee_window, text="Редактировать", command=start_editing,
+                             style="AccentButton.TButton")
+    edit_button.pack(side="left", padx=5)
+
+    show_code_button = ttk.Button(main_frame, text="Показать сотрудников", command=open1, style="AccentButton.TButton")
+    show_code_button.pack(pady=10)
+
+    root.mainloop()
 
 
 def get_all_employees():
@@ -184,7 +207,7 @@ def get_all_employees():
             try:
                 name = f"{employee['Имя']} {employee['Фамилия']} {employee['Отчество']}"
                 age = employee['Возраст']
-                position = employee['желаемое положение']
+                position = employee['место работы']
                 experience = employee['опыт']
                 employee_id = employee['ID']
                 employee_list.insert(tk.END, f"{name} ({age}) - {position}, опыт: {experience}, ID: {employee_id}")
@@ -202,7 +225,7 @@ def get_all_employees():
                 details_text.insert(tk.END, f"Отчество: {employee_data.get('Отчество', 'Неизвестно')}\n")
                 details_text.insert(tk.END, f"Возраст: {employee_data.get('Возраст', 'Неизвестно')}\n")
                 details_text.insert(tk.END,
-                                    f"Желаемое положение: {employee_data.get('желаемое положение', 'Неизвестно')}\n")
+                                    f"Место работы: {employee_data.get('Место работы', 'Неизвестно')}\n")
                 details_text.insert(tk.END, f"Опыт: {employee_data.get('опыт', 'Неизвестно')}\n")
                 details_text.insert(tk.END, f"ID: {employee_data.get('ID', 'Неизвестно')}\n")
 
@@ -350,11 +373,109 @@ def create_main_window():
     root4.mainloop()
 
 def Get_everyone_to_work():
-    Pass
+    def load_data(employee_listbox):
+        with open('user_data.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+        employee_listbox.delete(0, tk.END)
+        for employee in data:
+            info = [f"Код: {employee['code']}"]
+            info.extend(employee['info'].split())
+            employee_listbox.insert(tk.END, '\n'.join(info))
+
+    def transfer_employee(employee_listbox, code_entry):
+        code_to_transfer = code_entry.get()
+        if not code_to_transfer:
+            messagebox.showerror("Ошибка", "Введите код сотрудника")
+            return
+
+        with open('user_data.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+        employees_transferred = []
+        for employee in data:
+            if employee['code'] == code_to_transfer:
+                employee_info = employee['info'].split()
+                try:
+                    experience = int(employee_info[5].strip())
+                except (ValueError, IndexError):
+                    experience = 0
+
+                new_employee_data = {
+                    "Имя": employee_info[0].strip(),
+                    "Фамилия": employee_info[1].strip(),
+                    "Отчество": employee_info[2].strip(),
+                    "Возраст": int(employee_info[3].strip()),
+                    "желаемое положение": employee_info[4].strip(),
+                    "опыт": experience,
+                    "ID": employee_info[6].strip()
+                }
+
+                with open('The_database.json', 'a', encoding='utf-8') as new_file:
+                    json.dump(new_employee_data, new_file, indent=2, ensure_ascii=False)
+                    new_file.write('\n')
+
+                employees_transferred.append(employee)
+
+        for employee in employees_transferred:
+            data.remove(employee)
+
+        with open('user_data.json', 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
+
+        messagebox.showinfo("Успешно", f"Сотрудник с кодом {code_to_transfer} перенесен в The_database.json")
+        load_data(employee_listbox)
+        code_entry.delete(0, tk.END)
+
+    def create_widgets(root):
+        employee_frame = ttk.Frame(root)
+        employee_frame.pack(pady=10)
+        employee_listbox = tk.Listbox(employee_frame, width=120, height=10)
+        employee_listbox.pack(side=tk.LEFT, fill=tk.BOTH)
+        employee_scrollbar = ttk.Scrollbar(employee_frame, orient=tk.VERTICAL, command=employee_listbox.yview)
+        employee_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        employee_listbox.config(yscrollcommand=employee_scrollbar.set)
+
+        load_data(employee_listbox)
+
+        code_frame = ttk.Frame(root)
+        code_frame.pack(pady=10)
+        code_label = ttk.Label(code_frame, text="Введите код сотрудника для переноса:")
+        code_label.pack(side=tk.LEFT)
+        code_entry = ttk.Entry(code_frame, width=10)
+        code_entry.pack(side=tk.LEFT, padx=10)
+        transfer_button = ttk.Button(code_frame, text="Перенести",
+                                     command=lambda: transfer_employee(employee_listbox, code_entry))
+        transfer_button.pack(side=tk.LEFT)
+
+        return code_entry
+
+    def show_desired_employees(employee_listbox):
+        desired_employees = []
+        employee_listbox.selection_clear(0, tk.END)
+
+        for index in employee_listbox.get(0, tk.END):
+            info = index.split('\n')
+            code = info[0].split(': ')[1]
+            try:
+                desired_position = info[5].split(': ')[1]
+            except IndexError:
+                desired_position = ''
+
+            if desired_position:
+                desired_employees.append(index)
+
+    root = tk.Tk()
+    root.title("Перенос данных сотрудников")
+    root.geometry("600x400")
+
+
+    create_widgets(root)
+
+    root.mainloop()
 
 
 def fire_employees():
-     # Clear the contents of the file
     with open('the_database.json', 'w') as file:
          file.write('[]')
 
@@ -381,22 +502,22 @@ def user():
             self.master.title("Home comfort")
             self.Basket = []
 
-            self.label = tk.Label(master, text= "Добро пожаловать в кофейню!")
+            self.label = tk.Label(master, text= Hello)
             self.label.pack()
 
-            self.button_order = tk.Button(master, text = "Заказать", command=self.go_to_order)
+            self.button_order = tk.Button(master, text = Order, command=self.go_to_order)
             self.button_order.pack()
 
-            self.button_payment = tk.Button(master, text = "Оплатить", command=self.payment)
+            self.button_payment = tk.Button(master, text = Payment, command=self.payment)
             self.button_payment.pack()
 
-            self.button_cart = tk.Button(master, text = "Корзина", command=self.cart)
+            self.button_cart = tk.Button(master, text = Basket, command=self.cart)
             self.button_cart.pack()
 
-            self.button_edit_cart = tk.Button(master, text = "Редактировать корзину", command=self.edit_cart)
+            self.button_edit_cart = tk.Button(master, text = Edit_the_shopping_cart, command=self.edit_cart)
             self.button_edit_cart.pack()
 
-            self.button_exit = tk.Button(master, text= "Выход", command=master.quit)
+            self.button_exit = tk.Button(master, text= Exit, command=master.quit)
             self.button_exit.pack()
             # Определение размеров экрана
             screen_width = master.winfo_screenwidth()
