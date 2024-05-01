@@ -1,21 +1,13 @@
-def my_decorator_display_menu(display_menu):
-    def wrapper():
-        print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
-        display_menu()
-        print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
-
-    return wrapper
 
 
-@my_decorator_display_menu
-def display_menu():
-    menu_text = "1 - Добавить сотрудника\n" \
-                "2 - Просмотреть сотрудников\n" \
-                "3 - Редактирование сотрудников\n" \
-                "4 - Увольнение сотрудника\n" \
-                "5 - Посмотреть всех желающих устроиться на работу\n" \
-                "6 - Устроить на работу всех желающих\n" \
-                "7 - Стать банкротом и уволить всех\n"
+
+Add = "Добавить сотрудника"
+Look = "Просмотреть сотрудников"
+Edit = "Редактирование сотрудников"
+Dismissal = "Увольнение сотрудника"
+View_all_comers = "Посмотреть всех желающих устроиться на работу"
+Get_everyone_to_work = "Устроить на работу всех желающих"
+Become_bankrupt = "Стать банкротом и уволить всех"
 
 
 def display_success(message):
@@ -25,12 +17,12 @@ def display_error(message):
     print(f"\nMistake: {message}")
 
 
-def my_decorator_menu_2(menu_2):
-    def wrapper():
-        print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
-        menu_2()
-        print("─── ⋆⋅☆⋅⋆ ───── ⋆⋅☆⋅⋆ ──")
-
-    return wrapper
 
 
+
+Hello = "Добро пожаловать в кофейню!"
+Order ="Заказать"
+Payment = "Оплатить"
+Basket ="Корзина"
+Edit_the_shopping_cart = "Редактировать корзину"
+Exit ="Выход"
