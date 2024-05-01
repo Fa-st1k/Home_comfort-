@@ -1,5 +1,5 @@
 from model import add_employee, editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
-from view import display_menu,  display_success, display_error
+from view import Add, Look, Edit,Dismissal, View_all_comers, Get_everyone_to_work, Become_bankrupt, display_success, display_error
 import json
 import tkinter as tk
 from tkinter import ttk
@@ -16,12 +16,11 @@ def main():
         global root
         root = tk.Tk()
         root.title("Управление сотрудниками")
-        root.state('zoomed')  # Развернуть окно на весь экран
+        root.state('zoomed')
 
         style = ttk.Style()
-        style.theme_use("clam")  # Выбор темы для улучшенного внешнего вида
+        style.theme_use("clam")
 
-        # Создание нового стиля для кнопок
         style.map("AccentButton",
                   foreground=[('active', 'white'), ('!active', 'black')],
                   background=[('active', 'green'), ('!active', 'light green')])
@@ -33,31 +32,31 @@ def main():
         button_frame = ttk.Frame(root)
         button_frame.pack(pady=20)
 
-        add_employee_button = ttk.Button(button_frame, text="Добавить сотрудника", command=add_employee,
+        add_employee_button = ttk.Button(button_frame, text=Add, command=add_employee,
                                          style="AccentButton.TButton")
         add_employee_button.grid(row=0, column=0, padx=10, pady=10)
 
-        view_employees_button = ttk.Button(button_frame, text="Просмотреть сотрудников", command=get_all_employees,
+        view_employees_button = ttk.Button(button_frame, text=Look, command=get_all_employees,
                                            style="AccentButton.TButton")
         view_employees_button.grid(row=0, column=1, padx=10, pady=10)
 
-        edit_employees_button = ttk.Button(button_frame, text="Редактирование сотрудников", command=editing_employees,
+        edit_employees_button = ttk.Button(button_frame, text = Edit, command=editing_employees,
                                            style="AccentButton.TButton")
         edit_employees_button.grid(row=0, column=2, padx=10, pady=10)
 
-        remove_employee_button = ttk.Button(button_frame, text="Увольнение сотрудника", command=removing_employees,
+        remove_employee_button = ttk.Button(button_frame, text=Dismissal, command=removing_employees,
                                             style="AccentButton.TButton")
         remove_employee_button.grid(row=1, column=0, padx=10, pady=10)
 
-        view_applicants_button = ttk.Button(button_frame, text="Посмотреть желающих устроиться",
+        view_applicants_button = ttk.Button(button_frame, text=View_all_comers,
                                             command=create_main_window, style="AccentButton.TButton")
         view_applicants_button.grid(row=1, column=1, padx=10, pady=10)
 
-        hire_applicants_button = ttk.Button(button_frame, text="Устроить всех желающих", command=get_everyone_to_work,
+        hire_applicants_button = ttk.Button(button_frame, text=Get_everyone_to_work, command=get_everyone_to_work,
                                             style="AccentButton.TButton")
         hire_applicants_button.grid(row=1, column=2, padx=10, pady=10)
 
-        fire_all_button = ttk.Button(button_frame, text="Уволить всех", command=fire_employees,
+        fire_all_button = ttk.Button(button_frame, text=Become_bankrupt, command=fire_employees,
                                      style="AccentButton.TButton")
         fire_all_button.grid(row=2, column=1, padx=10, pady=10)
 
@@ -96,8 +95,8 @@ def back_to_main():
 
 root8 = tk.Tk()
 root8.title("Кафе 'Домашний уют'")
-root8.state('zoomed')  # Открыть окно на весь экран
-root8.configure(bg="#f0f5f5")  # Пастельный фоновый цвет
+root8.state('zoomed')
+root8.configure(bg="#f0f5f5")
 
 # Стили
 style = ttk.Style()
@@ -123,8 +122,8 @@ job_button.pack(pady=10)
 
 login_window = tk.Toplevel(root8)
 login_window.title("Вход для администратора")
-login_window.geometry("+{}+{}".format(root8.winfo_x() + 100, root8.winfo_y() + 100))  # Центрировать окно
-login_window.configure(bg="#f0f5f5")  # Пастельный фоновый цвет
+login_window.geometry("+{}+{}".format(root8.winfo_x() + 100, root8.winfo_y() + 100))
+login_window.configure(bg="#f0f5f5")
 login_window.withdraw()
 
 password_label = ttk.Label(login_window, text="Введите пароль:", font=("Arial", 14))
