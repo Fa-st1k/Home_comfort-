@@ -1,4 +1,3 @@
-
 import json
 import telebot
 import json
@@ -374,11 +373,15 @@ def create_main_window():
 
     root4.mainloop()
 
-def everyone_to_work():
+def Get_everyone_to_work():
+    import json
+    import tkinter as tk
+    from tkinter import ttk
+    from tkinter import messagebox, font, simpledialog
+
     def load_data(employee_listbox):
         with open('user_data.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
-
         employee_listbox.delete(0, tk.END)
         for employee in data:
             info = [f"Код: {employee['code']}"]
@@ -390,10 +393,8 @@ def everyone_to_work():
         if not code_to_transfer:
             messagebox.showerror("Ошибка", "Введите код сотрудника")
             return
-
         with open('user_data.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
-
         employees_transferred = []
         for employee in data:
             if employee['code'] == code_to_transfer:
@@ -402,29 +403,23 @@ def everyone_to_work():
                     experience = int(employee_info[5].strip())
                 except (ValueError, IndexError):
                     experience = 0
-
                 new_employee_data = {
                     "Имя": employee_info[0].strip(),
                     "Фамилия": employee_info[1].strip(),
                     "Отчество": employee_info[2].strip(),
                     "Возраст": int(employee_info[3].strip()),
-                    "желаемое положение": employee_info[4].strip(),
+                    "Работа": employee_info[4].strip(),  # Изменение здесь
                     "опыт": experience,
                     "ID": employee_info[6].strip()
                 }
-
                 with open('The_database.json', 'a', encoding='utf-8') as new_file:
                     json.dump(new_employee_data, new_file, indent=2, ensure_ascii=False)
                     new_file.write('\n')
-
                 employees_transferred.append(employee)
-
         for employee in employees_transferred:
             data.remove(employee)
-
         with open('user_data.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=2, ensure_ascii=False)
-
         messagebox.showinfo("Успешно", f"Сотрудник с кодом {code_to_transfer} перенесен в The_database.json")
         load_data(employee_listbox)
         code_entry.delete(0, tk.END)
@@ -437,9 +432,7 @@ def everyone_to_work():
         employee_scrollbar = ttk.Scrollbar(employee_frame, orient=tk.VERTICAL, command=employee_listbox.yview)
         employee_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         employee_listbox.config(yscrollcommand=employee_scrollbar.set)
-
         load_data(employee_listbox)
-
         code_frame = ttk.Frame(root9)
         code_frame.pack(pady=10)
         code_label = ttk.Label(code_frame, text="Введите код сотрудника для переноса:")
@@ -449,50 +442,35 @@ def everyone_to_work():
         transfer_button = ttk.Button(code_frame, text="Перенести",
                                      command=lambda: transfer_employee(employee_listbox, code_entry))
         transfer_button.pack(side=tk.LEFT)
-
         return code_entry
 
     def show_desired_employees(employee_listbox):
         desired_employees = []
         employee_listbox.selection_clear(0, tk.END)
-
         for index in employee_listbox.get(0, tk.END):
             info = index.split('\n')
+
             code = info[0].split(': ')[1]
             try:
                 desired_position = info[5].split(': ')[1]
             except IndexError:
                 desired_position = ''
-
             if desired_position:
                 desired_employees.append(index)
 
     root9 = tk.Tk()
     root9.title("Перенос данных сотрудников")
     root9.geometry("600x400")
-
     create_widgets(root9)
-
     root9.mainloop()
 
 
 def fire_employees():
-    def fire_employees1():
-        with open('the_database.json', 'w') as file:
-            file.write('[]')
+    with open('the_database.json', 'w') as file:
+         file.write('[]')
 
-        with open('user_data.json', 'w') as file:
-            file.write('[]')
-
-        messagebox.showinfo("Банкротство", "Все сотрудники уволены! Вы обанкротились.")
-
-    root10 = tk.Tk()
-    root10.title("Компания")
-
-    fire_button = tk.Button(root10, text="Уволить всех сотрудников", command=fire_employees1)
-    fire_button.pack(pady=20)
-
-    root10.mainloop()
+    with open('user_data.json', 'w') as file:
+         file.write('[]')
 
 
 
