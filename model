@@ -4,6 +4,7 @@ import json
 import random
 import string
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox, font, simpledialog
 from view import Hello, Order, Payment, Basket, Edit_the_shopping_cart, Exit
 from collections import Counter
@@ -373,6 +374,10 @@ def create_main_window():
     root4.mainloop()
 
 def Get_everyone_to_work():
+    import json
+    import tkinter as tk
+    from tkinter import ttk
+    from tkinter import messagebox, font, simpledialog
     def load_data(employee_listbox):
         with open('user_data.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
@@ -427,8 +432,8 @@ def Get_everyone_to_work():
         load_data(employee_listbox)
         code_entry.delete(0, tk.END)
 
-    def create_widgets(root):
-        employee_frame = ttk.Frame(root)
+    def create_widgets(root9):
+        employee_frame = ttk.Frame(root9)
         employee_frame.pack(pady=10)
         employee_listbox = tk.Listbox(employee_frame, width=120, height=10)
         employee_listbox.pack(side=tk.LEFT, fill=tk.BOTH)
@@ -438,7 +443,7 @@ def Get_everyone_to_work():
 
         load_data(employee_listbox)
 
-        code_frame = ttk.Frame(root)
+        code_frame = ttk.Frame(root9)
         code_frame.pack(pady=10)
         code_label = ttk.Label(code_frame, text="Введите код сотрудника для переноса:")
         code_label.pack(side=tk.LEFT)
@@ -465,14 +470,13 @@ def Get_everyone_to_work():
             if desired_position:
                 desired_employees.append(index)
 
-    root = tk.Tk()
-    root.title("Перенос данных сотрудников")
-    root.geometry("600x400")
+    root9 = tk.Tk()
+    root9.title("Перенос данных сотрудников")
+    root9.geometry("600x400")
 
+    create_widgets(root9)
 
-    create_widgets(root)
-
-    root.mainloop()
+    root9.mainloop()
 
 
 def fire_employees():
