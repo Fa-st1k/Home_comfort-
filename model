@@ -1,3 +1,4 @@
+
 import json
 import telebot
 import json
@@ -373,11 +374,7 @@ def create_main_window():
 
     root4.mainloop()
 
-def Get_everyone_to_work():
-    import json
-    import tkinter as tk
-    from tkinter import ttk
-    from tkinter import messagebox, font, simpledialog
+def everyone_to_work():
     def load_data(employee_listbox):
         with open('user_data.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
@@ -480,11 +477,22 @@ def Get_everyone_to_work():
 
 
 def fire_employees():
-    with open('the_database.json', 'w') as file:
-         file.write('[]')
+    def fire_employees1():
+        with open('the_database.json', 'w') as file:
+            file.write('[]')
 
-    with open('user_data.json', 'w') as file:
-         file.write('[]')
+        with open('user_data.json', 'w') as file:
+            file.write('[]')
+
+        messagebox.showinfo("Банкротство", "Все сотрудники уволены! Вы обанкротились.")
+
+    root10 = tk.Tk()
+    root10.title("Компания")
+
+    fire_button = tk.Button(root10, text="Уволить всех сотрудников", command=fire_employees1)
+    fire_button.pack(pady=20)
+
+    root10.mainloop()
 
 
 
