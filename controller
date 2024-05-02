@@ -1,26 +1,25 @@
 from model import add_employee, editing_employees, removing_employees, get_all_employees, fire_employees, user, Sending_a_job_application,create_main_window,Get_everyone_to_work
-from view import Add, Look, Edit,Dismissal, View_all_comers, Get_everyone_to_work, Become_bankrupt, display_success, display_error
+from view import Add, Look, Edit,Dismissal, View_all_comers, get_everyone_to_work, Become_bankrupt, display_success, display_error
 import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
 def main():
-    employee_list = []
-
     def display_menu1():
         display_menu()
         menu_label.configure(text=menu_text, font=("Arial", 14))
 
-    def main():
+    def main5():
+        employee_list = []
         global root
         root = tk.Tk()
         root.title("Управление сотрудниками")
         root.state('zoomed')
 
+        # Определение стиля AccentButton
         style = ttk.Style()
         style.theme_use("clam")
-
         style.map("AccentButton",
                   foreground=[('active', 'white'), ('!active', 'black')],
                   background=[('active', 'green'), ('!active', 'light green')])
@@ -28,40 +27,41 @@ def main():
         global menu_label
         menu_label = ttk.Label(root, text="Выберите действие:", font=("Arial", 16))
         menu_label.pack(pady=20)
-
         button_frame = ttk.Frame(root)
         button_frame.pack(pady=20)
 
-        add_employee_button = ttk.Button(button_frame, text=Add, command=add_employee,
-                                         style="AccentButton.TButton")
-        add_employee_button.grid(row=0, column=0, padx=10, pady=10)
+        add_employee_button = ttk.Button(button_frame, text="Add", command=add_employee,
+                                         style="AccentButton.TButton", width=15, height=3)
+        add_employee_button.grid(row=0, column=0, padx=30, pady=30)
 
-        view_employees_button = ttk.Button(button_frame, text=Look, command=get_all_employees,
-                                           style="AccentButton.TButton")
-        view_employees_button.grid(row=0, column=1, padx=10, pady=10)
+        view_employees_button = ttk.Button(button_frame, text="Look", command=get_all_employees,
+                                           style="AccentButton.TButton", width=15, height=3)
+        view_employees_button.grid(row=0, column=1, padx=30, pady=30)
 
-        edit_employees_button = ttk.Button(button_frame, text = Edit, command=editing_employees,
-                                           style="AccentButton.TButton")
-        edit_employees_button.grid(row=0, column=2, padx=10, pady=10)
+        edit_employees_button = ttk.Button(button_frame, text="Edit", command=editing_employees,
+                                           style="AccentButton.TButton", width=15, height=3)
+        edit_employees_button.grid(row=0, column=2, padx=30, pady=30)
 
-        remove_employee_button = ttk.Button(button_frame, text=Dismissal, command=removing_employees,
-                                            style="AccentButton.TButton")
-        remove_employee_button.grid(row=1, column=0, padx=10, pady=10)
+        remove_employee_button = ttk.Button(button_frame, text="Dismissal", command=removing_employees,
+                                            style="AccentButton.TButton", width=15, height=3)
+        remove_employee_button.grid(row=1, column=0, padx=30, pady=30)
 
-        view_applicants_button = ttk.Button(button_frame, text=View_all_comers,
-                                            command=create_main_window, style="AccentButton.TButton")
-        view_applicants_button.grid(row=1, column=1, padx=10, pady=10)
+        view_applicants_button = ttk.Button(button_frame, text="View_all_comers",
+                                            command=create_main_window, style="AccentButton.TButton", width=15,
+                                            height=3)
+        view_applicants_button.grid(row=1, column=1, padx=30, pady=30)
 
-        hire_applicants_button = ttk.Button(button_frame, text=Get_everyone_to_work, command=get_everyone_to_work,
-                                            style="AccentButton.TButton")
-        hire_applicants_button.grid(row=1, column=2, padx=10, pady=10)
+        hire_applicants_button = ttk.Button(button_frame, text="get_everyone_to_work", command=Get_everyone_to_work,
+                                            style="AccentButton.TButton", width=15, height=3)
+        hire_applicants_button.grid(row=1, column=2, padx=30, pady=30)
 
-        fire_all_button = ttk.Button(button_frame, text=Become_bankrupt, command=fire_employees,
-                                     style="AccentButton.TButton")
+        fire_all_button = ttk.Button(button_frame, text="Become_bankrupt", command=fire_employees,
+                                     style="AccentButton.TButton", width=15, height=3)
         fire_all_button.grid(row=2, column=1, padx=10, pady=10)
 
         root.mainloop()
-    main()
+
+    main5()
 
 
 def main1():
