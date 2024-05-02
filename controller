@@ -4,7 +4,8 @@ import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-
+import webbrowser
+from tkinter import *
 def main():
     def display_menu1():
         display_menu()
@@ -32,28 +33,28 @@ def main():
 
         add_employee_button = ttk.Button(button_frame, text="Add", command=add_employee,
                                          style="AccentButton.TButton", width=15, height=3)
-        add_employee_button.grid(row=0, column=0, padx=30, pady=30)
+        add_employee_button.grid(row=0, column=0, padx=10, pady=10)
 
         view_employees_button = ttk.Button(button_frame, text="Look", command=get_all_employees,
                                            style="AccentButton.TButton", width=15, height=3)
-        view_employees_button.grid(row=0, column=1, padx=30, pady=30)
+        view_employees_button.grid(row=0, column=1, padx=10, pady=10)
 
         edit_employees_button = ttk.Button(button_frame, text="Edit", command=editing_employees,
                                            style="AccentButton.TButton", width=15, height=3)
-        edit_employees_button.grid(row=0, column=2, padx=30, pady=30)
+        edit_employees_button.grid(row=0, column=2, padx=10, pady=10)
 
         remove_employee_button = ttk.Button(button_frame, text="Dismissal", command=removing_employees,
                                             style="AccentButton.TButton", width=15, height=3)
-        remove_employee_button.grid(row=1, column=0, padx=30, pady=30)
+        remove_employee_button.grid(row=1, column=0, padx=10, pady=10)
 
         view_applicants_button = ttk.Button(button_frame, text="View_all_comers",
                                             command=create_main_window, style="AccentButton.TButton", width=15,
                                             height=3)
-        view_applicants_button.grid(row=1, column=1, padx=30, pady=30)
+        view_applicants_button.grid(row=1, column=1, padx=10, pady=10)
 
         hire_applicants_button = ttk.Button(button_frame, text="get_everyone_to_work", command=Get_everyone_to_work,
                                             style="AccentButton.TButton", width=15, height=3)
-        hire_applicants_button.grid(row=1, column=2, padx=30, pady=30)
+        hire_applicants_button.grid(row=1, column=2, padx=10, pady=10)
 
         fire_all_button = ttk.Button(button_frame, text="Become_bankrupt", command=fire_employees,
                                      style="AccentButton.TButton", width=15, height=3)
@@ -78,10 +79,18 @@ def main1():
 def user1():
     user()
 
+def open_link(event):
+    url = "https://web.telegram.org/k/#@ItprrogerTestbot"
+    webbrowser.open(url)
 def job_application():
-    messagebox.showinfo("Режим подачи заявки", "Перейдите в Телеграм, для этого введите в строке поиска @Projectbot12345bot")
-    root8.withdraw()
+    root9 = Tk()
+    root9.title('Регистрация')
+    label = tk.Label(root9, text="Нажмите сюда, чтобы перейти на телеграмм бота для регистрации", fg="blue", cursor="hand2")
+    label.pack(pady=20)
 
+    # Привязываем событие клика мышью к функции открытия ссылки
+    label.bind("<Button-1>", open_link)
+    root9.mainloop()
 def login():
     if password_entry.get() == "2":
         main1()
@@ -139,5 +148,3 @@ back_button = ttk.Button(login_window, text="Вернуться", command=back_t
 back_button.pack(pady=10)
 
 root8.mainloop()
-
-
